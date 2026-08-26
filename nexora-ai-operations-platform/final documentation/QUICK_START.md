@@ -13,13 +13,40 @@ Python, Node.js, and pnpm are required only for development outside Docker.
 Open PowerShell in the project directory:
 
 ```powershell
-cd "C:\Codex\19\1_Nexora AI Operations Platform"
+cd "<path-to-nexora-ai-operations-platform>"
 .\manage.ps1 Setup
 .\manage.ps1 Up
 .\manage.ps1 Seed
 ```
 
 `Setup` creates the local `.env` file without overwriting an existing one. Before the first start, replace `POSTGRES_PASSWORD` in `.env` with a long URL-safe password.
+
+## Configure an AI provider
+
+Provider keys belong only in ignored local files in the project root. Do not add real keys to `.env.example`, source code, frontend variables, documentation, or Git.
+
+OpenAI uses `.env.local`:
+
+```dotenv
+OPENAI_API_KEY=replace-with-your-runtime-key
+NEXORA_AI_PROVIDER_MODE=openai
+```
+
+AI Prime Tech uses `.env.aiprimetech.local`:
+
+```dotenv
+AIPRIMETECH_API_KEY=replace-with-your-runtime-key
+NEXORA_AI_PROVIDER_MODE=aiprimetech
+```
+
+Set `NEXORA_AI_PROVIDER_MODE=auto` to enable configured remote providers with the bounded local fallback, or `mock` for deterministic offline operation. Model IDs can be changed in `.env` using `NEXORA_OPENAI_CHAT_MODEL`, `NEXORA_OPENAI_EMBEDDING_MODEL`, and the `NEXORA_AIPRIMETECH_*_MODEL` variables.
+
+After changing a key, mode, or model ID, apply the new environment:
+
+```powershell
+.\manage.ps1 Up
+Invoke-RestMethod http://localhost:3000/api/v1/health
+```
 
 ## Open the application
 

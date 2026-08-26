@@ -241,20 +241,51 @@ tracked `.env.example` contains no usable secret.
 
 ### 2. Choose the AI provider
 
-Nothing else is required for deterministic mock mode. AI Prime Tech uses its
-own ignored file and secret name; it never reuses `OPENAI_API_KEY`:
+Remote credentials are optional. Leave `NEXORA_AI_PROVIDER_MODE=mock` for fully
+offline deterministic operation, or configure one of the ignored local files
+below. Docker Compose loads these files after `.env`, so their values override
+the non-secret defaults without entering Git history.
+
+| Provider | Local file | Secret variable | Provider mode |
+| --- | --- | --- | --- |
+| OpenAI | `.env.local` | `OPENAI_API_KEY` | `openai` or `auto` |
+| AI Prime Tech | `.env.aiprimetech.local` | `AIPRIMETECH_API_KEY` | `aiprimetech` or `auto` |
+
+For OpenAI, create or edit `.env.local` in the project root:
+
+```dotenv
+# .env.local
+OPENAI_API_KEY=replace-with-your-runtime-key
+NEXORA_AI_PROVIDER_MODE=openai
+```
+
+For AI Prime Tech, create or edit `.env.aiprimetech.local`:
 
 ```dotenv
 # .env.aiprimetech.local
 AIPRIMETECH_API_KEY=replace-with-your-runtime-key
-NEXORA_AI_PROVIDER_MODE=auto
+NEXORA_AI_PROVIDER_MODE=aiprimetech
 NEXORA_AIPRIMETECH_REQUEST_TIMEOUT_SECONDS=90
 NEXORA_AIPRIMETECH_MAX_PROVIDER_RETRIES=0
 ```
 
+Use `NEXORA_AI_PROVIDER_MODE=auto` when one or both key files are present and
+Nexora should enable every configured remote provider while retaining its
+bounded local fallback. Use `mock` for repeatable offline tests and evaluations.
+
+Model IDs are non-secret settings and may be changed in `.env`:
+
+```dotenv
+NEXORA_OPENAI_CHAT_MODEL=gpt-4.1-mini
+NEXORA_OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+NEXORA_AIPRIMETECH_FABLE_MODEL=claude-fable-5
+NEXORA_AIPRIMETECH_SONNET_MODEL=claude-sonnet-5
+NEXORA_AIPRIMETECH_OPUS_MODEL=claude-opus-5
+```
+
 Never add provider keys to `.env.example`, shell history, screenshots, frontend
-variables, or Git. `.env.aiprimetech.local` is loaded at container runtime and
-excluded from the Docker build context. The adapter uses the documented
+variables, or Git. The ignored local files are loaded at container runtime and
+excluded from the Docker build context. AI Prime Tech uses the documented
 OpenAI-compatible `https://aiprimetech.io/v1` base URL and Bearer auth. Fable's
 tracked estimate is based on the public catalog; private Sonnet/Opus IDs and
 prices must be verified against `GET /v1/models` and overridden through
@@ -264,8 +295,10 @@ can exceed the generic provider default. A timed-out model advances once through
 the bounded Opus/Sonnet/Fable/local fallback chain instead of retrying the same
 slow transport call.
 
-For OpenAI itself, keep `OPENAI_API_KEY` in ignored `.env.local` and set
-`NEXORA_AI_PROVIDER_MODE=openai`.
+After changing keys, modes, or model IDs, run `.\manage.ps1 Up` again so Docker
+Compose recreates the backend with the updated environment. Verify the active
+configuration through the health endpoint and Request Console; neither surface
+returns the secret value.
 
 ### 3. Start and verify
 
