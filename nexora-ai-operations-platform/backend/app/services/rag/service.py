@@ -129,7 +129,7 @@ class KnowledgeService:
             raise ValueError("document chunk limit exceeded")
         vectors = self._embed_chunks([chunk.content for chunk in chunks])
         stored_metadata = dict(metadata or {})
-        if document_ai.get("extraction_method") == "ocr":
+        if document_ai.get("extraction_method") in {"ocr", "native_pdf_text"}:
             stored_metadata["document_ai"] = document_ai
         document = Document(
             title=title,
@@ -153,18 +153,18 @@ class KnowledgeService:
         if bool(document_ai.get("requires_human_review")):
             review_request = Request(
                 channel="api",
-                message=f"Review OCR extraction for {filename}",
-                metadata_json={"workflow": "document_ocr", "document_id": document.id},
+                message=f"Review document extraction for {filename}",
+                metadata_json={"workflow": "document_ai", "document_id": document.id},
                 intent="data_lookup",
                 topic="general_inquiry",
                 risk_level="medium",
-                classification_reason="OCR extraction requires validation by a human operator",
+                classification_reason="Document extraction requires validation by a human operator",
                 status="pending_review",
                 response_text=json.dumps(document_ai.get("entities", {}), ensure_ascii=False, sort_keys=True),
                 confidence=float(document_ai.get("entity_confidence", 0.0)),
-                model_used=str(document_ai.get("ocr_engine", "ocr")),
+                model_used=str(document_ai.get("extraction_engine", "document-ai")),
                 requires_review=True,
-                escalation_reasons_json=[str(document_ai.get("review_reason") or "OCR validation required")],
+                escalation_reasons_json=[str(document_ai.get("review_reason") or "Document validation required")],
                 success=True,
             )
             db.add(review_request)
@@ -172,7 +172,7 @@ class KnowledgeService:
             db.add(
                 ReviewItem(
                     request_id=review_request.id,
-                    reason=str(document_ai.get("review_reason") or "OCR validation required"),
+                    reason=str(document_ai.get("review_reason") or "Document validation required"),
                     original_response=review_request.response_text,
                     confidence=review_request.confidence,
                     model=review_request.model_used,

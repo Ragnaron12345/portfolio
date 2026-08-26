@@ -9,7 +9,7 @@ All application routes use the `/api/v1` prefix.
 | --- | --- | --- |
 | `POST` | `/requests` | Run classification, retrieval, routing, tools, generation, and review policy. |
 | `GET` | `/requests/{id}` | Read a persisted request trace and provider/tool evidence. |
-| `GET` | `/reviews` | List pending or resolved human-review items, including OCR reviews. |
+| `GET` | `/reviews` | List pending or resolved human-review items, including document-AI reviews. |
 | `POST` | `/reviews/{id}/approve` | Approve an item. |
 | `POST` | `/reviews/{id}/reject` | Reject an item. |
 | `POST` | `/reviews/{id}/edit-and-approve` | Persist a corrected response and approve it. |
@@ -24,13 +24,17 @@ All application routes use the `/api/v1` prefix.
 | `GET` | `/metrics/summary` | Read operational KPIs. |
 | `GET` | `/health` | Check database and provider configuration state. |
 
-## OCR upload response
+## Document-AI upload response
 
-OCR processing is reported under `metadata.document_ai`:
+Native-PDF and OCR invoice processing is reported under `metadata.document_ai`.
+Both paths expose common extraction fields; OCR adds compatibility-specific
+`ocr_engine` and `ocr_confidence` fields:
 
 ```json
 {
   "extraction_method": "ocr",
+  "extraction_engine": "tesseract",
+  "extraction_confidence": 0.91,
   "ocr_engine": "tesseract",
   "ocr_confidence": 0.91,
   "entity_confidence": 0.94,

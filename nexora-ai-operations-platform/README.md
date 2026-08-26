@@ -114,7 +114,7 @@ frontend variables, screenshots, `.env.example`, or Git history.
 ## OCR invoice example
 
 Upload a native or scanned invoice to `POST /api/v1/knowledge/documents`. The
-response exposes `metadata.document_ai` with extraction method, OCR confidence,
+response exposes `metadata.document_ai` with extraction method and confidence,
 invoice number, date, currency, total, validation errors, entity confidence, and
 `requires_human_review`. Low-confidence or invalid extraction creates a pending
 item in the existing Review Queue.

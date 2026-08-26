@@ -71,6 +71,29 @@ def test_scanned_pdf_falls_back_to_ocr_and_extracts_validated_invoice(monkeypatc
     assert analysis["requires_human_review"] is False
 
 
+def test_native_pdf_uses_common_invoice_analysis(monkeypatch) -> None:  # noqa: ANN001
+    class NativePage:
+        def extract_text(self) -> str:
+            return "Invoice INV-4096 Invoice date: 2026-08-25 Amount due: USD 275.40"
+
+    class FakeReader:
+        def __init__(self, *_args, **_kwargs) -> None:  # noqa: ANN002, ANN003
+            self.pages = [NativePage()]
+
+    monkeypatch.setattr("app.services.rag.parsers.PdfReader", FakeReader)
+
+    pages, analysis = parse_document_with_analysis("native-invoice.pdf", b"native-pdf")
+
+    assert pages[0].text.startswith("Invoice INV-4096")
+    assert analysis["extraction_method"] == "native_pdf_text"
+    assert analysis["extraction_engine"] == "pypdf"
+    assert analysis["entities"]["invoice_number"] == "INV-4096"
+    assert analysis["entities"]["currency"] == "USD"
+    assert analysis["entities"]["total"] == 275.4
+    assert analysis["validation"]["valid"] is True
+    assert analysis["requires_human_review"] is False
+
+
 def test_invoice_validation_routes_low_confidence_extraction_to_review() -> None:
     analysis = analyze_business_document(
         OcrResult(pages=[OcrPage("Invoice image with unreadable fields", 1)], confidence=0.42)

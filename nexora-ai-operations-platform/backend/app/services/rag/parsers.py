@@ -6,7 +6,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 from app.services.rag.chunking import ParsedPage
-from app.services.rag.ocr import analyze_business_document, ocr_document
+from app.services.rag.ocr import OcrPage, OcrResult, analyze_business_document, ocr_document
 
 
 class DocumentParseError(ValueError):
@@ -58,7 +58,15 @@ def parse_document_with_analysis(
         except Exception as exc:  # pypdf uses several parser-specific exception types
             raise DocumentParseError("invalid or unsupported PDF") from exc
         if any(page.text.strip() for page in pages):
-            return pages, {"extraction_method": "native_pdf_text", "requires_human_review": False}
+            result = OcrResult(
+                pages=[
+                    OcrPage(text=page.text, page_number=page.page_number or index + 1)
+                    for index, page in enumerate(pages)
+                ],
+                confidence=1.0,
+                engine="pypdf",
+            )
+            return pages, analyze_business_document(result, extraction_method="native_pdf_text")
         return _ocr_pages(filename, content, max_chars=max_chars)
     if extension in {".png", ".jpg", ".jpeg"}:
         return _ocr_pages(filename, content, max_chars=max_chars)
@@ -81,6 +89,6 @@ def _ocr_pages(
         raise DocumentParseError("document decoded-text limit exceeded")
     if not any(page.text.strip() for page in pages):
         raise DocumentParseError("OCR produced no readable text")
-    return pages, analyze_business_document(result)
+    return pages, analyze_business_document(result, extraction_method="ocr")
 
 

@@ -12,7 +12,7 @@ An AI operations platform for retrieval-augmented generation, explainable model 
 
 **Stack:** FastAPI, React, TypeScript, PostgreSQL, pgvector, Docker Compose
 
-**Highlights:** grounded RAG, risk-aware routing, schema-validated tools, review workflows, trace-level telemetry, and a persisted 40-case evaluation suite.
+**Highlights:** grounded RAG, risk-aware routing, schema-validated tools, review workflows, trace-level telemetry, native/scanned invoice extraction with OCR and validation, plus separate 40-case regression and 30-case held-out evaluation suites.
 
 ## Repository structure
 
@@ -22,7 +22,10 @@ portfolio/
     ├── backend/
     ├── frontend/
     ├── docs/
-    ├── final documentation/
+    │   ├── api.md
+    │   ├── architecture.md
+    │   ├── evaluation.md
+    │   └── security.md
     ├── docker-compose.yml
     └── README.md
 ```

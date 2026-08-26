@@ -251,8 +251,33 @@ def test_low_confidence_image_ocr_creates_document_review(client: TestClient, mo
     assert document_ai["extraction_method"] == "ocr"
     assert document_ai["requires_human_review"] is True
     reviews = client.get("/api/v1/reviews").json()
-    review = next(item for item in reviews if item["original_message"] == "Review OCR extraction for invoice.png")
+    review = next(item for item in reviews if item["original_message"] == "Review document extraction for invoice.png")
     assert review["status"] == "pending"
     assert review["model"] == "tesseract"
+
+
+def test_native_pdf_invoice_persists_document_ai_metadata(client: TestClient, monkeypatch) -> None:  # noqa: ANN001
+    class NativePage:
+        def extract_text(self) -> str:
+            return "Invoice INV-8192 Invoice date: 2026-08-25 Total: EUR 84.30"
+
+    class FakeReader:
+        def __init__(self, *_args, **_kwargs) -> None:  # noqa: ANN002, ANN003
+            self.pages = [NativePage()]
+
+    monkeypatch.setattr("app.services.rag.parsers.PdfReader", FakeReader)
+
+    uploaded = client.post(
+        "/api/v1/knowledge/documents",
+        files={"file": ("native-invoice.pdf", b"native-invoice-pdf", "application/pdf")},
+    )
+
+    assert uploaded.status_code == 201, uploaded.text
+    document_ai = uploaded.json()["metadata"]["document_ai"]
+    assert document_ai["extraction_method"] == "native_pdf_text"
+    assert document_ai["extraction_engine"] == "pypdf"
+    assert document_ai["entities"]["invoice_number"] == "INV-8192"
+    assert document_ai["validation"]["valid"] is True
+    assert document_ai["requires_human_review"] is False
 
 

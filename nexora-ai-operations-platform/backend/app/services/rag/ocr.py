@@ -62,7 +62,11 @@ def ocr_document(filename: str, content: bytes, *, max_pages: int = 500) -> OcrR
     )
 
 
-def analyze_business_document(result: OcrResult) -> dict[str, Any]:
+def analyze_business_document(
+    result: OcrResult,
+    *,
+    extraction_method: str = "ocr",
+) -> dict[str, Any]:
     """Extract and validate a deliberately narrow invoice entity schema."""
 
     text = "\n".join(page.text for page in result.pages)
@@ -96,16 +100,19 @@ def analyze_business_document(result: OcrResult) -> dict[str, Any]:
     completeness = sum(entities[field] not in (None, "") for field in required) / len(required)
     confidence = round(0.65 * result.confidence + 0.35 * completeness, 4)
     requires_review = bool(errors) or confidence < 0.85
-    return {
-        "extraction_method": "ocr",
-        "ocr_engine": result.engine,
-        "ocr_confidence": result.confidence,
+    analysis = {
+        "extraction_method": extraction_method,
+        "extraction_engine": result.engine,
+        "extraction_confidence": result.confidence,
         "entity_confidence": confidence,
         "entities": entities,
         "validation": {"valid": not errors, "errors": errors},
         "requires_human_review": requires_review,
-        "review_reason": "low OCR/entity confidence or failed field validation" if requires_review else None,
+        "review_reason": "low extraction/entity confidence or failed field validation" if requires_review else None,
     }
+    if extraction_method == "ocr":
+        analysis.update({"ocr_engine": result.engine, "ocr_confidence": result.confidence})
+    return analysis
 
 
 def _match(pattern: str, text: str) -> str | None:
