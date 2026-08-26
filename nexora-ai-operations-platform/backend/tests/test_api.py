@@ -153,6 +153,12 @@ def test_upload_security_validation(client: TestClient) -> None:
         files={"file": ("broken.pdf", b"not a PDF", "application/pdf")},
     )
     assert invalid_pdf.status_code == 422
+    invalid_type = client.post(
+        "/api/v1/knowledge/documents",
+        files={"file": ("safe.txt", b"safe", "text/plain")},
+        data={"document_type": "contract"},
+    )
+    assert invalid_type.status_code == 422
 
 
 def test_metrics_models_are_derived_from_persisted_calls(client: TestClient) -> None:
@@ -244,6 +250,7 @@ def test_low_confidence_image_ocr_creates_document_review(client: TestClient, mo
     uploaded = client.post(
         "/api/v1/knowledge/documents",
         files={"file": ("invoice.png", b"synthetic-image", "image/png")},
+        data={"document_type": "invoice"},
     )
 
     assert uploaded.status_code == 201, uploaded.text
@@ -276,8 +283,37 @@ def test_native_pdf_invoice_persists_document_ai_metadata(client: TestClient, mo
     document_ai = uploaded.json()["metadata"]["document_ai"]
     assert document_ai["extraction_method"] == "native_pdf_text"
     assert document_ai["extraction_engine"] == "pypdf"
+    assert document_ai["routing"]["requested_type"] == "auto"
+    assert document_ai["routing"]["resolved_type"] == "invoice"
     assert document_ai["entities"]["invoice_number"] == "INV-8192"
     assert document_ai["validation"]["valid"] is True
     assert document_ai["requires_human_review"] is False
+
+
+def test_general_pdf_does_not_create_invoice_review(client: TestClient, monkeypatch) -> None:  # noqa: ANN001
+    class PolicyPage:
+        def extract_text(self) -> str:
+            return "Customer Support Policy. Respond to routine questions with grounded citations."
+
+    class FakeReader:
+        def __init__(self, *_args, **_kwargs) -> None:  # noqa: ANN002, ANN003
+            self.pages = [PolicyPage()]
+
+    monkeypatch.setattr("app.services.rag.parsers.PdfReader", FakeReader)
+
+    uploaded = client.post(
+        "/api/v1/knowledge/documents",
+        files={"file": ("support-policy.pdf", b"support-policy-pdf", "application/pdf")},
+    )
+
+    assert uploaded.status_code == 201, uploaded.text
+    document_ai = uploaded.json()["metadata"]["document_ai"]
+    assert document_ai["document_type"] == "general"
+    assert document_ai["routing"]["resolved_type"] == "general"
+    assert document_ai["requires_human_review"] is False
+    assert all(
+        item["original_message"] != "Review document extraction for support-policy.pdf"
+        for item in client.get("/api/v1/reviews").json()
+    )
 
 

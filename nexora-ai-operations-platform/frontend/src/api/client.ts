@@ -420,11 +420,12 @@ export const client = {
     return api<unknown>(`/knowledge/documents/${encodeURIComponent(id)}${suffix}`).then(normalizeDocumentDetail);
   },
 
-  uploadDocument(file: File, title: string, source: string) {
+  uploadDocument(file: File, title: string, source: string, documentType: "auto" | "general" | "invoice") {
     const body = new FormData();
     body.append("file", file);
     body.append("title", title);
     body.append("source", source);
+    body.append("document_type", documentType);
     return api<KnowledgeDocument>("/knowledge/documents", { method: "POST", body })
       .then((document) => ({ ...document, created_at: normalizeUtcTimestamp(document.created_at) }));
   },

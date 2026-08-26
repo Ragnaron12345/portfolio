@@ -1,0 +1,4 @@
+services:
+  backend:
+    environment:
+      NEXORA_AI_PROVIDER_MODE: mock

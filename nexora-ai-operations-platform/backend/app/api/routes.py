@@ -32,6 +32,7 @@ from app.schemas.contracts import (
 )
 from app.services.evaluation.service import EvaluationDatasetError, EvaluationRunAlreadyRunning
 from app.services.observability.metrics import is_evaluation_request, metrics_summary, model_metrics
+from app.services.rag.document_ai import DocumentType
 from app.services.rag.parsers import DocumentParseError
 from app.services.review_service import ReviewConflictError, ReviewDecisionError
 
@@ -150,6 +151,7 @@ def upload_document(
     file: UploadFile = File(...),
     title: str | None = Form(default=None, max_length=300),
     source: str = Form(default="upload", max_length=500),
+    document_type: DocumentType = Form(default="auto"),
     metadata_json: str = Form(default="{}", max_length=16_384),
 ) -> DocumentRead:
     with request.app.state.knowledge_mutation_lock:
@@ -159,6 +161,7 @@ def upload_document(
             file=file,
             title=title,
             source=source,
+            document_type=document_type,
             metadata_json=metadata_json,
         )
 
@@ -170,6 +173,7 @@ def _upload_document_locked(
     file: UploadFile,
     title: str | None,
     source: str,
+    document_type: DocumentType,
     metadata_json: str,
 ) -> DocumentRead:
     _reject_knowledge_mutation_during_evaluation(db)
@@ -206,6 +210,7 @@ def _upload_document_locked(
             title=(title or filename.rsplit(".", 1)[0]).strip(),
             source=source.strip() or "upload",
             mime_type=mime_type,
+            document_type=document_type,
             metadata=metadata,
         )
     except (DocumentParseError, ValueError) as exc:

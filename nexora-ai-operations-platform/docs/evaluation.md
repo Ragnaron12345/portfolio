@@ -8,6 +8,20 @@ The two checked-in datasets are:
   multilingual, indirect-injection, missing-evidence, conflict, tool, and
   high-risk cases.
 
+Persisted comparison artifacts are versioned under `data/eval_results`. The
+full 30-case held-out baseline/improved run is
+`deterministic-held-out-30-v1.json` and contains 60 per-case results plus run
+provenance. Reproduce it against the local stack with:
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.evaluation.yml up -d --build
+python scripts/export_evaluation.py --output data/eval_results/deterministic-held-out-30-v1.json
+```
+
+The evaluation override pins mock mode even when a developer has provider
+credentials in ignored local environment files, preventing accidental network
+calls and keeping the checked-in comparison reproducible.
+
 The held-out questions were not used to author query-expansion rules. Expansion
 uses token-level domain vocabulary rather than matching benchmark sentences.
 The split does not make the benchmark secret after publication; it records a
@@ -44,6 +58,9 @@ runs are deduplicated; knowledge drift invalidates the run.
 ## Honest interpretation
 
 Deterministic mock scores are regression evidence, not production-quality claims.
+The current held-out artifact records 16.67% pass rate for both configurations;
+improved retrieval recall rises from 39.13% to 47.83% and groundedness from
+25.56% to 32.22%. This is a surfaced generalization gap, not a release claim.
 Provider-backed reporting should use repeated trials, uncertainty intervals,
 failure-rate reporting, and pinned model identifiers. A strong portfolio report
 shows regression and held-out results separately and discusses failures instead

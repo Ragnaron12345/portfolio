@@ -24,6 +24,11 @@ All application routes use the `/api/v1` prefix.
 | `GET` | `/metrics/summary` | Read operational KPIs. |
 | `GET` | `/health` | Check database and provider configuration state. |
 
+`POST /knowledge/documents` accepts multipart field `document_type` with
+`auto` (default), `general`, or `invoice`. `general` bypasses entity extraction;
+`invoice` forces the invoice schema; `auto` applies the deterministic document
+router after native extraction or OCR.
+
 ## Document-AI upload response
 
 Native-PDF and OCR invoice processing is reported under `metadata.document_ai`.
@@ -33,6 +38,7 @@ Both paths expose common extraction fields; OCR adds compatibility-specific
 ```json
 {
   "extraction_method": "ocr",
+  "document_type": "invoice",
   "extraction_engine": "tesseract",
   "extraction_confidence": 0.91,
   "ocr_engine": "tesseract",
@@ -49,6 +55,9 @@ Both paths expose common extraction fields; OCR adds compatibility-specific
   "requires_human_review": false
 }
 ```
+
+General PDFs and images expose the resolved routing decision without invoice
+entities or validation errors and proceed directly to RAG indexing.
 
 The API returns `422` for invalid input, `409` when knowledge mutation conflicts
 with an evaluation, `413` for configured size limits, and `429` for rate limits.

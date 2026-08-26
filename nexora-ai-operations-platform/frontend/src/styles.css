@@ -648,6 +648,7 @@ h1, h2, h3, p { margin-top: 0; }
 .drop-zone strong { color: var(--ink); font-size: 11px; }
 .drop-zone span { font-size: 10px; }
 .upload-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 14px; }
+.upload-fields .field--routing { grid-column: 1 / -1; }
 .upload-panel .form-actions { padding: 0 14px 14px; }
 .knowledge-detail { padding: 0 20px 20px; }
 .knowledge-detail > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin: 0 -20px 18px; padding: 18px 20px; border-bottom: 1px solid var(--rule); background: var(--surface); }

@@ -11,9 +11,9 @@ import { client } from "../api/client";
 import { Button, EmptyState, ErrorBanner, LoadingRows, PageHeader, StatusMark, formatNumber } from "../components/Ui";
 import { Icon } from "../components/Icon";
 import { MarkdownContent } from "../components/MarkdownContent";
-import type { KnowledgeDocument, KnowledgeDocumentDetail } from "../types";
+import type { DocumentType, KnowledgeDocument, KnowledgeDocumentDetail } from "../types";
 
-const ACCEPTED_EXTENSIONS = new Set(["txt", "md", "pdf"]);
+const ACCEPTED_EXTENSIONS = new Set(["txt", "md", "pdf", "png", "jpg", "jpeg"]);
 const MAX_UPLOAD_BYTES = 100 * 1024 * 1024;
 const DOCUMENT_PREVIEW_STEP = 200_000;
 const CHUNK_PREVIEW_STEP = 50;
@@ -46,6 +46,7 @@ export function KnowledgeBasePage() {
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [source, setSource] = useState("Operations Manual");
+  const [documentType, setDocumentType] = useState<DocumentType>("auto");
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -142,7 +143,7 @@ export function KnowledgeBasePage() {
     if (!candidate) return;
     const extension = candidate.name.split(".").at(-1)?.toLowerCase() ?? "";
     if (!ACCEPTED_EXTENSIONS.has(extension)) {
-      setError("Only .txt, .md and .pdf documents are accepted.");
+      setError("Only .txt, .md, .pdf, .png, .jpg and .jpeg documents are accepted.");
       return;
     }
     if (candidate.size > MAX_UPLOAD_BYTES) {
@@ -160,10 +161,11 @@ export function KnowledgeBasePage() {
     setSaving(true);
     setError(null);
     try {
-      const created = await client.uploadDocument(file, title.trim(), source.trim());
+      const created = await client.uploadDocument(file, title.trim(), source.trim(), documentType);
       setShowUpload(false);
       setFile(null);
       setTitle("");
+      setDocumentType("auto");
       await load();
       setSelectedId(created.id);
     } catch (reason) {
@@ -346,11 +348,11 @@ export function KnowledgeBasePage() {
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={(event) => { event.preventDefault(); chooseFile(event.dataTransfer.files[0] ?? null); }}
               >
-                <Icon name="upload" /><strong>{file ? file.name : "Drag and drop your file here, or browse"}</strong><span>.txt, .md, .pdf · maximum transport size 100 MB</span>
+                <Icon name="upload" /><strong>{file ? file.name : "Drag and drop your file here, or browse"}</strong><span>.txt, .md, .pdf, .png, .jpg, .jpeg · maximum transport size 100 MB</span>
               </button>
-              <input ref={fileInput} type="file" hidden accept=".txt,.md,.pdf,text/plain,text/markdown,application/pdf" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
+              <input ref={fileInput} type="file" hidden accept=".txt,.md,.pdf,.png,.jpg,.jpeg,text/plain,text/markdown,application/pdf,image/png,image/jpeg" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
               <p className="section-caption">Parser safety limits are independent of file bytes: at most 20 million decoded characters, 500 PDF pages, and 25,000 indexed chunks. Files exceeding a parsed-content limit are rejected with the exact reason.</p>
-              <div className="upload-fields"><label className="field"><span>Title</span><input value={title} onChange={(event) => setTitle(event.target.value)} required maxLength={200} /></label><label className="field"><span>Source metadata</span><input value={source} onChange={(event) => setSource(event.target.value)} required maxLength={200} /><small>Origin or owner, for example Risk &amp; Compliance—not the document title.</small></label></div>
+              <div className="upload-fields"><label className="field"><span>Title</span><input value={title} onChange={(event) => setTitle(event.target.value)} required maxLength={200} /></label><label className="field"><span>Source metadata</span><input value={source} onChange={(event) => setSource(event.target.value)} required maxLength={200} /><small>Origin or owner, for example Risk &amp; Compliance—not the document title.</small></label><label className="field field--routing"><span>Document type</span><select aria-label="Document type" value={documentType} onChange={(event) => setDocumentType(event.target.value as DocumentType)}><option value="auto">Auto-detect</option><option value="general">General knowledge</option><option value="invoice">Invoice</option></select><small>Auto routes invoice-shaped documents to extraction; general documents go directly to RAG indexing.</small></label></div>
               <div className="form-actions"><Button type="button" onClick={() => setShowUpload(false)}>Cancel</Button><Button variant="primary" icon="upload" type="submit" disabled={!file || !title.trim() || !source.trim() || saving}>{saving ? "Indexing…" : "Upload & index"}</Button></div>
             </form>
           ) : null}

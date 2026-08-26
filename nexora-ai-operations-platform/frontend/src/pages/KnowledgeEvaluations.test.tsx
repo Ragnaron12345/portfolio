@@ -128,6 +128,9 @@ describe("Knowledge Base evidence reader", () => {
     expect(screen.getByText(/20 million decoded characters/i)).toBeInTheDocument();
     expect(screen.getByText(/25,000 indexed chunks/i)).toBeInTheDocument();
     expect(screen.getByText(/Origin or owner/i)).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Document type" })).toHaveValue("auto");
+    expect(screen.getByRole("option", { name: "General knowledge" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Invoice" })).toBeInTheDocument();
     expect(screen.getByText(/Ingestion is atomic/i)).toBeInTheDocument();
     expect(screen.getByText("Not stored")).toBeInTheDocument();
   });

@@ -6,7 +6,8 @@ from pathlib import Path
 from pypdf import PdfReader
 
 from app.services.rag.chunking import ParsedPage
-from app.services.rag.ocr import OcrPage, OcrResult, analyze_business_document, ocr_document
+from app.services.rag.document_ai import DocumentType, route_document_analysis
+from app.services.rag.ocr import OcrPage, OcrResult, ocr_document
 
 
 class DocumentParseError(ValueError):
@@ -27,6 +28,7 @@ def parse_document_with_analysis(
     filename: str,
     content: bytes,
     *,
+    document_type: DocumentType = "auto",
     max_chars: int | None = None,
 ) -> tuple[list[ParsedPage], dict[str, object]]:
     extension = Path(filename).suffix.casefold()
@@ -39,7 +41,13 @@ def parse_document_with_analysis(
             raise DocumentParseError("document decoded-text limit exceeded")
         if not text.strip():
             raise DocumentParseError("document is empty")
-        return [ParsedPage(text=text)], {"extraction_method": "native_text", "requires_human_review": False}
+        pages = [ParsedPage(text=text)]
+        result = OcrResult(pages=[OcrPage(text=text, page_number=1)], confidence=1.0, engine="utf-8")
+        return pages, route_document_analysis(
+            result,
+            extraction_method="native_text",
+            requested_type=document_type,
+        )
     if extension == ".pdf":
         try:
             reader = PdfReader(io.BytesIO(content), strict=False)
@@ -66,10 +74,14 @@ def parse_document_with_analysis(
                 confidence=1.0,
                 engine="pypdf",
             )
-            return pages, analyze_business_document(result, extraction_method="native_pdf_text")
-        return _ocr_pages(filename, content, max_chars=max_chars)
+            return pages, route_document_analysis(
+                result,
+                extraction_method="native_pdf_text",
+                requested_type=document_type,
+            )
+        return _ocr_pages(filename, content, document_type=document_type, max_chars=max_chars)
     if extension in {".png", ".jpg", ".jpeg"}:
-        return _ocr_pages(filename, content, max_chars=max_chars)
+        return _ocr_pages(filename, content, document_type=document_type, max_chars=max_chars)
     raise DocumentParseError("unsupported file type")
 
 
@@ -77,6 +89,7 @@ def _ocr_pages(
     filename: str,
     content: bytes,
     *,
+    document_type: DocumentType,
     max_chars: int | None,
 ) -> tuple[list[ParsedPage], dict[str, object]]:
     try:
@@ -89,6 +102,10 @@ def _ocr_pages(
         raise DocumentParseError("document decoded-text limit exceeded")
     if not any(page.text.strip() for page in pages):
         raise DocumentParseError("OCR produced no readable text")
-    return pages, analyze_business_document(result, extraction_method="ocr")
+    return pages, route_document_analysis(
+        result,
+        extraction_method="ocr",
+        requested_type=document_type,
+    )
 
 

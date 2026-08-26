@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from app.models.entities import Document, DocumentChunk, Request, ReviewItem
 from app.schemas.contracts import Citation
 from app.services.rag.chunking import chunk_pages
+from app.services.rag.document_ai import DocumentType
 from app.services.rag.embeddings import EmbeddingProvider, cosine_similarity
 from app.services.rag.parsers import parse_document_with_analysis
 
@@ -73,6 +74,7 @@ class KnowledgeService:
         title: str,
         source: str,
         mime_type: str,
+        document_type: DocumentType = "auto",
         metadata: dict[str, Any] | None = None,
     ) -> IngestionResult:
         # Checksum uniqueness is also enforced by the database. The local lock
@@ -86,6 +88,7 @@ class KnowledgeService:
                 title=title,
                 source=source,
                 mime_type=mime_type,
+                document_type=document_type,
                 metadata=metadata,
             )
 
@@ -98,6 +101,7 @@ class KnowledgeService:
         title: str,
         source: str,
         mime_type: str,
+        document_type: DocumentType = "auto",
         metadata: dict[str, Any] | None = None,
     ) -> IngestionResult:
         checksum = hashlib.sha256(content).hexdigest()
@@ -107,6 +111,7 @@ class KnowledgeService:
         pages, document_ai = parse_document_with_analysis(
             filename,
             content,
+            document_type=document_type,
             max_chars=self.max_document_chars,
         )
         extracted_content = _full_document_content(pages)
@@ -129,7 +134,10 @@ class KnowledgeService:
             raise ValueError("document chunk limit exceeded")
         vectors = self._embed_chunks([chunk.content for chunk in chunks])
         stored_metadata = dict(metadata or {})
-        if document_ai.get("extraction_method") in {"ocr", "native_pdf_text"}:
+        if document_ai.get("document_type") == "invoice" or document_ai.get("extraction_method") in {
+            "ocr",
+            "native_pdf_text",
+        }:
             stored_metadata["document_ai"] = document_ai
         document = Document(
             title=title,

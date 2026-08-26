@@ -23,23 +23,25 @@ Knowledge ingestion supports Markdown, text, native-text PDF, scanned PDF, PNG,
 and JPEG. Native PDF text is preferred. When no PDF text exists, or when an
 image is uploaded, the backend renders pages and performs local Tesseract OCR.
 
-Native extraction and OCR converge on the same deliberately narrow invoice
-workflow:
+Extraction feeds an explicit document router. Operators may choose `general` or
+`invoice`; `auto` uses multiple deterministic structural signals and does not
+classify on the word `invoice` alone:
 
 ```text
-PDF -> native extraction --\
-                           -> invoice entities -> validation -> confidence -> review/index
-scan/image -> OCR --------/
+upload -> native extraction or OCR -> document router
+                                      |-- general -> RAG indexing
+                                      `-- invoice -> entities -> validation -> confidence -> review/index
 ```
 
 Extracted entities are invoice number, date, currency, and total. Missing or
 invalid required fields and confidence below 0.85 create a pending item in the
 same Review Queue used by request workflows. Extracted text and structured
-processing metadata remain attached to the indexed document for auditability.
+processing and routing metadata remain attached to PDF and image documents for
+auditability.
 
 This slice demonstrates the control plane, not a claim of universal OCR or
 document classification. Production extensions should add language packs,
-layout-aware models, document-type routing, immutable source storage, and
+layout-aware models, learned classifiers, immutable source storage, and
 field-level reviewer corrections.
 
 ## Main boundaries

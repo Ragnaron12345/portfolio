@@ -69,8 +69,11 @@ Run the held-out split through the API:
 
 Historical `40/40` mock output remains versioned under `data/eval_results`, but
 is explicitly regression evidence from a tuned, open dataset - not production
-accuracy. Held-out and provider-backed results must be reported separately.
-Metric definitions and interpretation are in [evaluation](docs/evaluation.md).
+accuracy. The checked-in 30-case held-out artifact reports both configurations
+separately: improved retrieval recall and groundedness increased, while pass rate
+remained 16.67%, exposing classifier and safety-generalization work rather than
+hiding it. Metric definitions and interpretation are in
+[evaluation](docs/evaluation.md).
 
 ## Run locally
 
@@ -111,17 +114,19 @@ Replace the URL and model IDs with values supplied by the selected provider,
 then run `.\manage.ps1 Up` again. Never commit keys to source, documentation,
 frontend variables, screenshots, `.env.example`, or Git history.
 
-## OCR invoice example
+## Document routing and invoice extraction
 
-Upload a native or scanned invoice to `POST /api/v1/knowledge/documents`. The
-response exposes `metadata.document_ai` with extraction method and confidence,
-invoice number, date, currency, total, validation errors, entity confidence, and
-`requires_human_review`. Low-confidence or invalid extraction creates a pending
+Upload with `document_type=auto`, `general`, or `invoice`. In `auto`, a
+deterministic multi-signal classifier routes general documents directly to RAG
+indexing and invoice-shaped documents to entity extraction. Explicit types
+bypass classification. Native PDF text and OCR share the invoice schema:
+invoice number, date, currency, total, validation, confidence, and
+`requires_human_review`. Low-confidence or invalid invoices create a pending
 item in the existing Review Queue.
 
 The Docker backend installs Tesseract locally; uploaded document pixels are not
-sent to an external OCR provider. This is a focused invoice workflow, not a
-claim of universal layout understanding.
+sent to an external OCR provider. This is a focused document-routing and invoice
+workflow, not a claim of universal layout understanding.
 
 ## Repository map
 

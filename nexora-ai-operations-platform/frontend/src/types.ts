@@ -173,6 +173,8 @@ export interface KnowledgeDocument {
   metadata?: Record<string, unknown>;
 }
 
+export type DocumentType = "auto" | "general" | "invoice";
+
 export interface KnowledgeChunk {
   id: string;
   chunk_index: number;
