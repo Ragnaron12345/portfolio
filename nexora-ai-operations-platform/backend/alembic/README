@@ -1,0 +1,13 @@
+Nexora database migrations
+
+Create a revision after changing the ORM metadata:
+
+    alembic revision --autogenerate -m "describe the schema change"
+
+Apply all revisions:
+
+    alembic upgrade head
+
+The Docker image applies ``upgrade head`` before starting Uvicorn. Tests keep
+using the lightweight SQLite ``create_all`` bootstrap unless they explicitly
+exercise this migration environment.
