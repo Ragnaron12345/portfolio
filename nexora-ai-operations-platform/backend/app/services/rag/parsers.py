@@ -1,0 +1,86 @@
+from __future__ import annotations
+
+import io
+from pathlib import Path
+
+from pypdf import PdfReader
+
+from app.services.rag.chunking import ParsedPage
+from app.services.rag.ocr import analyze_business_document, ocr_document
+
+
+class DocumentParseError(ValueError):
+    pass
+
+
+def parse_document(
+    filename: str,
+    content: bytes,
+    *,
+    max_chars: int | None = None,
+) -> list[ParsedPage]:
+    pages, _ = parse_document_with_analysis(filename, content, max_chars=max_chars)
+    return pages
+
+
+def parse_document_with_analysis(
+    filename: str,
+    content: bytes,
+    *,
+    max_chars: int | None = None,
+) -> tuple[list[ParsedPage], dict[str, object]]:
+    extension = Path(filename).suffix.casefold()
+    if extension in {".txt", ".md"}:
+        try:
+            text = content.decode("utf-8-sig")
+        except UnicodeDecodeError as exc:
+            raise DocumentParseError("text documents must be UTF-8 encoded") from exc
+        if max_chars is not None and len(text) > max_chars:
+            raise DocumentParseError("document decoded-text limit exceeded")
+        if not text.strip():
+            raise DocumentParseError("document is empty")
+        return [ParsedPage(text=text)], {"extraction_method": "native_text", "requires_human_review": False}
+    if extension == ".pdf":
+        try:
+            reader = PdfReader(io.BytesIO(content), strict=False)
+            if len(reader.pages) > 500:
+                raise DocumentParseError("PDF page limit exceeded")
+            pages: list[ParsedPage] = []
+            extracted_chars = 0
+            for index, page in enumerate(reader.pages):
+                text = page.extract_text() or ""
+                extracted_chars += len(text)
+                if max_chars is not None and extracted_chars > max_chars:
+                    raise DocumentParseError("document decoded-text limit exceeded")
+                pages.append(ParsedPage(text=text, page_number=index + 1))
+        except DocumentParseError:
+            raise
+        except Exception as exc:  # pypdf uses several parser-specific exception types
+            raise DocumentParseError("invalid or unsupported PDF") from exc
+        if any(page.text.strip() for page in pages):
+            return pages, {"extraction_method": "native_pdf_text", "requires_human_review": False}
+        return _ocr_pages(filename, content, max_chars=max_chars)
+    if extension in {".png", ".jpg", ".jpeg"}:
+        return _ocr_pages(filename, content, max_chars=max_chars)
+    raise DocumentParseError("unsupported file type")
+
+
+def _ocr_pages(
+    filename: str,
+    content: bytes,
+    *,
+    max_chars: int | None,
+) -> tuple[list[ParsedPage], dict[str, object]]:
+    try:
+        result = ocr_document(filename, content)
+    except (RuntimeError, ValueError) as exc:
+        raise DocumentParseError(str(exc)) from exc
+    pages = [ParsedPage(text=page.text, page_number=page.page_number) for page in result.pages]
+    text_length = sum(len(page.text) for page in pages)
+    if max_chars is not None and text_length > max_chars:
+        raise DocumentParseError("document decoded-text limit exceeded")
+    if not any(page.text.strip() for page in pages):
+        raise DocumentParseError("OCR produced no readable text")
+    return pages, analyze_business_document(result)
+
+

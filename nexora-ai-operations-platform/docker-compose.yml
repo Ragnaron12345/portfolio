@@ -1,0 +1,130 @@
+name: ${COMPOSE_PROJECT_NAME:-nexora-ai-platform}
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-security: &default-security
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nexora}
+      POSTGRES_USER: ${POSTGRES_USER:-nexora}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/00-enable-vector.sql:/docker-entrypoint-initdb.d/00-enable-vector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks:
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    init: true
+    env_file:
+      - path: .env.example
+        required: true
+      - path: .env
+        required: false
+      - path: .env.local
+        required: false
+      - path: .env.aiprimetech.local
+        required: false
+    environment:
+      NEXORA_DATABASE_URL: "postgresql+psycopg://${POSTGRES_USER:-nexora}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-nexora}"
+      NEXORA_EVAL_CASES_PATH: /app/data/eval_cases/cases.json
+      NEXORA_EVAL_HELD_OUT_CASES_PATH: /app/data/eval_cases/held_out.json
+      NEXORA_TRUST_PROXY_HEADERS: "true"
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8001}:8000"
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - edge
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks:
+      - edge
+    <<: *default-security
+    logging: *default-logging
+
+  redis:
+    image: redis:7.4-alpine
+    profiles: ["cache"]
+    restart: unless-stopped
+    # Safe for this topology because Redis has no published port and joins only
+    # the Compose-internal data network. Protected mode would reject backend
+    # traffic from another container when no password is configured.
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--protected-mode", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks:
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+volumes:
+  postgres_data:
+
+networks:
+  edge:
+  data:
+    internal: true
+
+

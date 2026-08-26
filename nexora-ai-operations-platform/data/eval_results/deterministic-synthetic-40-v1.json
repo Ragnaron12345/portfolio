@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_version": "1.0.0",
+  "artifact_id": "deterministic-synthetic-40-v1",
+  "title": "Nexora deterministic synthetic 40-case comparison",
+  "provenance": {
+    "execution_profile": "local_deterministic_mock",
+    "generated_from_persisted_results": true,
+    "case_count_per_configuration": 40,
+    "configurations": [
+      "baseline",
+      "improved"
+    ],
+    "dataset": {
+      "path": "../eval_cases/cases.json",
+      "sha256": "56712d5f3aa6a6a37b70dd873c7b1fd9bba0b5df9e699444fa406cbab0115aa0"
+    },
+    "evaluator": {
+      "path": "../../backend/app/services/evaluation/service.py",
+      "sha256": "cee58fc844f4905830801ce06d4538546fffbf3b7f4cdd1f2e34fca588bd9ba5"
+    },
+    "knowledge_corpus": [
+      {
+        "path": "../demo_documents/account_access_policy.md",
+        "sha256": "74b1d1fea001b6e669aab448fdffcca4620a8790653ed299026816808abe61f9"
+      },
+      {
+        "path": "../demo_documents/card_replacement_procedure.md",
+        "sha256": "58a1652a21583084fe16655f59443d4a715fb809d873dddfd53ce56cdfc2f599"
+      },
+      {
+        "path": "../demo_documents/customer_support_policy.md",
+        "sha256": "ed482c51a5249b52232f610c954eb310be496f0ef413726d4ff753606574f142"
+      },
+      {
+        "path": "../demo_documents/fraud_escalation_policy.md",
+        "sha256": "d72575987f6a6ef7cb87544d35a420eb8527796314d7a615483e93d9f1ede65c"
+      },
+      {
+        "path": "../demo_documents/refund_policy.md",
+        "sha256": "6664083796ca9d962f7b2adcc38c6fe2ea6ca2ecbd275e1c668f028ae8b93220"
+      },
+      {
+        "path": "../demo_documents/service_status_guide.md",
+        "sha256": "70bb28131662c5e35524cc87934b9540da4041a982ef6fa60e873beb06ab8992"
+      }
+    ]
+  },
+  "metric_definitions": {
+    "pass_rate": "Passed evaluation results divided by all 40 results in the configuration.",
+    "retrieval_hit_rate": "Results with retrieval_score greater than zero divided by all 40 results in the configuration.",
+    "p95_latency_ms": "Nearest-rank p95 of end-to-end case latency in milliseconds for this local run. This value is machine-specific."
+  },
+  "results": {
+    "baseline": {
+      "pass_rate": {
+        "value": 0.675,
+        "display": "67.5%",
+        "passed_cases": 27,
+        "total_cases": 40
+      },
+      "retrieval_hit_rate": {
+        "value": 0.65,
+        "display": "65.0%",
+        "hit_cases": 26,
+        "total_cases": 40
+      },
+      "p95_latency_ms": {
+        "value": 11.606,
+        "machine_specific": true
+      }
+    },
+    "improved": {
+      "pass_rate": {
+        "value": 1.0,
+        "display": "100.0%",
+        "passed_cases": 40,
+        "total_cases": 40
+      },
+      "retrieval_hit_rate": {
+        "value": 0.85,
+        "display": "85.0%",
+        "hit_cases": 34,
+        "total_cases": 40
+      },
+      "p95_latency_ms": {
+        "value": 12.303,
+        "machine_specific": true
+      }
+    }
+  },
+  "unreported_metrics": [
+    "estimated_cost",
+    "average_latency_ms",
+    "intent_accuracy",
+    "escalation_accuracy",
+    "citation_correctness",
+    "groundedness",
+    "structured_output_validity"
+  ],
+  "limitations": [
+    "This is a deterministic local mock run over synthetic in-repository documents and cases.",
+    "The result is regression evidence for this exact dataset, corpus, evaluator, and configuration pair; it is not a production-quality claim.",
+    "The 100% improved pass rate must not be generalized to unseen, multilingual, adversarial, provider-backed, or real-customer traffic.",
+    "Latency is machine-specific and is not a service-level objective or production forecast.",
+    "No cost value is reported because this artifact has no confirmed provider-cost measurement."
+  ],
+  "methodology": "../../docs/evaluation.md"
+}
