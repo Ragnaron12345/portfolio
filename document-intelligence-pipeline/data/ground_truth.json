@@ -1,0 +1,2324 @@
+{
+  "name": "DocIntel synthetic ground truth",
+  "version": "1.0",
+  "description": "64 fully synthetic documents; 60 supported benchmark cases and 4 unknown routing cases.",
+  "counts": {
+    "invoice": 20,
+    "bank_statement": 20,
+    "customer_application": 20,
+    "unknown": 4
+  },
+  "documents": [
+    {
+      "id": "INV-10000",
+      "filename": "INV-10000.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10000.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "251fc5bde411b47fdaaf2b2221cc8580911343cf208f645e3e07e4f4695bb376",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0180\nInvoice Date: 2026-05-01\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 300.00 | 300.00\nSubtotal: 900.00\nTax: 171.00\nTotal: 1071.00",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0180",
+        "invoice_date": "2026-05-01",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 900.0,
+        "tax": 171.0,
+        "total": 1071.0,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 300.0,
+            "total": 300.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10001",
+      "filename": "INV-10001.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10001.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "1447c389334e55619addbd7065f0642ace155892a5b69239ddfc415a453edff5",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0181\nInvoice Date: 2026-05-02\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 337.50 | 337.50\nSubtotal: 937.50\nTax: 178.12\nTotal: 1115.62",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0181",
+        "invoice_date": "2026-05-02",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 937.5,
+        "tax": 178.12,
+        "total": 1115.62,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 337.5,
+            "total": 337.5
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10002",
+      "filename": "INV-10002.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10002.png",
+      "mime_type": "image/png",
+      "sha256": "782bee1eb8508db1c9efbcac5fe1eda899497c3420672e6efc9f206ef061b7bc",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0182\nInvoice Date: 2026-05-03\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 375.00 | 375.00\nSubtotal: 975.00\nTax: 185.25\nTotal: 1160.25",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0182",
+        "invoice_date": "2026-05-03",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 975.0,
+        "tax": 185.25,
+        "total": 1160.25,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 375.0,
+            "total": 375.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10003",
+      "filename": "INV-10003.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10003.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "288f4438d05c933fcf92b77e29b29f218b7313df957358fbd16a5a83942cd46a",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0183\nInvoice Date: 2026-05-04\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 412.50 | 412.50\nSubtotal: 1012.50\nTax: 192.38\nTotal: 1246.88",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0183",
+        "invoice_date": "2026-05-04",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1012.5,
+        "tax": 192.38,
+        "total": 1246.88,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 412.5,
+            "total": 412.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "incorrect_totals"
+      ],
+      "needs_review": true,
+      "review_reason": "Invoice total differs from subtotal + tax by 42.00 EUR.",
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10004",
+      "filename": "INV-10004.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10004.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "e697e1f05bc1f17e4b08a9608a0a4581a86ce2460a3282f87272475cca2de4bd",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0184\nInvoice Date: 2026-05-05\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 450.00 | 450.00\nSubtotal: 1050.00\nTax: 199.50\nTotal: 1249.50",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0184",
+        "invoice_date": "2026-05-05",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1050.0,
+        "tax": 199.5,
+        "total": 1249.5,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 450.0,
+            "total": 450.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10005",
+      "filename": "INV-10005.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10005.png",
+      "mime_type": "image/png",
+      "sha256": "48cb8c17f64da2a8b64d2570cdcc9785d1f0bcef1efd995557d45bb065657a1c",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0185\nInvoice Date: 2026-05-06\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 487.50 | 487.50\nSubtotal: 1087.50\nTax: 206.62\nTotal: 1294.12",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0185",
+        "invoice_date": "2026-05-06",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1087.5,
+        "tax": 206.62,
+        "total": 1294.12,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 487.5,
+            "total": 487.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "rotation",
+        "low_contrast"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10006",
+      "filename": "INV-10006.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10006.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "8be7f33a9d453972f9a21d2e59cefab3de30d00f6c57472b12278f2eff434d01",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0186\nInvoice Date: 2026-05-07\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 525.00 | 525.00\nSubtotal: 1125.00\nTax: 213.75\nTotal: 1338.75",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0186",
+        "invoice_date": "2026-05-07",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1125.0,
+        "tax": 213.75,
+        "total": 1338.75,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 525.0,
+            "total": 525.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10007",
+      "filename": "INV-10007.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10007.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "6cda7cb11ca0116513d5e42f51d154ef484fbd9df397c92f3fdac7f3f3346151",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0187\nInvoice Date: 2026-05-08\nSeller: \nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 562.50 | 562.50\nSubtotal: 1162.50\nTax: 220.88\nTotal: 1383.38",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0187",
+        "invoice_date": "2026-05-08",
+        "seller_name": "",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1162.5,
+        "tax": 220.88,
+        "total": 1383.38,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 562.5,
+            "total": 562.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "missing_fields"
+      ],
+      "needs_review": true,
+      "review_reason": "Seller name is missing.",
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10008",
+      "filename": "INV-10008.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10008.png",
+      "mime_type": "image/png",
+      "sha256": "11adfd3b335cd1414ee3d0faa2fc1c08a4aebd0a026b3435af104f47355ab6ce",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0188\nInvoice Date: 2026-05-09\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 600.00 | 600.00\nSubtotal: 1200.00\nTax: 228.00\nTotal: 1428.00",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0188",
+        "invoice_date": "2026-05-09",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1200.0,
+        "tax": 228.0,
+        "total": 1428.0,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 600.0,
+            "total": 600.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10009",
+      "filename": "INV-10009.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10009.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "6649093ed8772c98268adb36e5cde2c5f36c15648e7a99b591e5c1539f2cbb96",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0189\nInvoice Date: 2026-05-10\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 637.50 | 637.50\nSubtotal: 1237.50\nTax: 235.12\nTotal: 1472.62",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0189",
+        "invoice_date": "2026-05-10",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1237.5,
+        "tax": 235.12,
+        "total": 1472.62,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 637.5,
+            "total": 637.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "multi_page"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10010",
+      "filename": "INV-10010.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10010.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "527799697d96b989b42163fe0b70cb50f3ecd7169fd979a441d1fed11f104ead",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0190\nInvoice Date: 2026-05-11\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 675.00 | 675.00\nSubtotal: 1275.00\nTax: 242.25\nTotal: 1517.25",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0190",
+        "invoice_date": "2026-05-11",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1275.0,
+        "tax": 242.25,
+        "total": 1517.25,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 675.0,
+            "total": 675.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10011",
+      "filename": "INV-10011.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10011.png",
+      "mime_type": "image/png",
+      "sha256": "d6171364f0f9a72b2d7cfbebce3d064e014570ab07fc20533f11332d808e6e24",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0191\nInvoice Date: 2026-05-12\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 712.50 | 712.50\nSubtotal: 1312.50\nTax: 249.38\nTotal: 1561.88",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0191",
+        "invoice_date": "2026-05-12",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1312.5,
+        "tax": 249.38,
+        "total": 1561.88,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 712.5,
+            "total": 712.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "duplicate_invoice"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10012",
+      "filename": "INV-10012.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10012.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "006a3c96180c9f04307203e07444116696548cf9e27a26f2395be766903c4e50",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0192\nInvoice Date: 2026-05-13\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 750.00 | 750.00\nSubtotal: 1350.00\nTax: 256.50\nTotal: 1606.50",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0192",
+        "invoice_date": "2026-05-13",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1350.0,
+        "tax": 256.5,
+        "total": 1606.5,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 750.0,
+            "total": 750.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10013",
+      "filename": "INV-10013.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10013.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "b1711f8debba1090073627ca677da32927ff5aa46e4f24c42cd354a64e5cc807",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0193\nInvoice Date: 2026-05-14\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 787.50 | 787.50\nSubtotal: 1387.50\nTax: 263.62\nTotal: 1693.12",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0193",
+        "invoice_date": "2026-05-14",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1387.5,
+        "tax": 263.62,
+        "total": 1693.12,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 787.5,
+            "total": 787.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "incorrect_totals"
+      ],
+      "needs_review": true,
+      "review_reason": "Invoice total differs from subtotal + tax by 42.00 EUR.",
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10014",
+      "filename": "INV-10014.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10014.png",
+      "mime_type": "image/png",
+      "sha256": "ee2feed25b25b6db7f4f80739a2251b44a92cf6cebdf07e2389945b0b85ffbf3",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0194\nInvoice Date: 2026-05-15\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 825.00 | 825.00\nSubtotal: 1425.00\nTax: 270.75\nTotal: 1695.75",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0194",
+        "invoice_date": "2026-05-15",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1425.0,
+        "tax": 270.75,
+        "total": 1695.75,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 825.0,
+            "total": 825.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10015",
+      "filename": "INV-10015.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10015.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "ab3634dc620aea6a45d787a6c66f181c6b49303219508298791375c418a7e319",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0195\nInvoice Date: 2026-05-16\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 862.50 | 862.50\nSubtotal: 1462.50\nTax: 277.88\nTotal: 1740.38",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0195",
+        "invoice_date": "2026-05-16",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1462.5,
+        "tax": 277.88,
+        "total": 1740.38,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 862.5,
+            "total": 862.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "unusual_layout"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10016",
+      "filename": "INV-10016.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10016.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "b535a00522d74aaf2623af802ca2251f0f0b10c86c173679df9c6e3f96a80946",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0196\nInvoice Date: 2026-05-17\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 900.00 | 900.00\nSubtotal: 1500.00\nTax: 285.00\nTotal: 1785.00",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0196",
+        "invoice_date": "2026-05-17",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1500.0,
+        "tax": 285.0,
+        "total": 1785.0,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 900.0,
+            "total": 900.0
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10017",
+      "filename": "INV-10017.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10017.png",
+      "mime_type": "image/png",
+      "sha256": "483decf8074eb22f2295f619de763c4872d96b80772205154f7d34a96268412e",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0197\nInvoice Date: 2026-05-18\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 937.50 | 937.50\nSubtotal: 1537.50\nTax: 292.12\nTotal: 1829.62",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0197",
+        "invoice_date": "2026-05-18",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1537.5,
+        "tax": 292.12,
+        "total": 1829.62,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 937.5,
+            "total": 937.5
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10018",
+      "filename": "INV-10018.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10018.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "837608a0420c86bac31cc0a8a901ed8d5b3c1b0ad6a2531ce17e6e1d03b6eae8",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "INVOICE\nInvoice Number: INV-2026-0198\nInvoice Date: 31.12.2025\nSeller: Bluewater Supplies Ltd.\nBuyer: Northwind Trading Ltd.\nCurrency: EUR\nITEM | Industrial valve | 10 | 60.00 | 600.00\nITEM | Service package | 1 | 975.00 | 975.00\nSubtotal: 1575.00\nTax: 299.25\nTotal: 1874.25",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0198",
+        "invoice_date": "2025-12-31",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1575.0,
+        "tax": 299.25,
+        "total": 1874.25,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 975.0,
+            "total": 975.0
+          }
+        ]
+      },
+      "edge_cases": [
+        "odd_dates"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "INV-10019",
+      "filename": "INV-10019.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\invoice\\INV-10019.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "1a905234a97b3971bbde94157c6af6f0b1782db98d0c89f51b4c01c391586b6f",
+      "document_type": "invoice",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "",
+      "ground_truth": {
+        "document_type": "invoice",
+        "invoice_number": "INV-2026-0199",
+        "invoice_date": "2026-05-20",
+        "seller_name": "Bluewater Supplies Ltd.",
+        "buyer_name": "Northwind Trading Ltd.",
+        "currency": "EUR",
+        "subtotal": 1612.5,
+        "tax": 306.38,
+        "total": 1918.88,
+        "line_items": [
+          {
+            "description": "Industrial valve",
+            "quantity": 10.0,
+            "unit_price": 60.0,
+            "total": 600.0
+          },
+          {
+            "description": "Service package",
+            "quantity": 1.0,
+            "unit_price": 1012.5,
+            "total": 1012.5
+          }
+        ]
+      },
+      "edge_cases": [
+        "empty_page"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 7,
+      "numeric_field_count": 3
+    },
+    {
+      "id": "STMT-20000",
+      "filename": "STMT-20000.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20000.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "1d98ddcc2e0e4a27107a2cf62e252ca42c7badc47252e8b222f6cb0fc72d52fe",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 1\nIBAN: DE89 **** **** 1000\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2400.00\nTX | 2026-04-02 | Salary | 2500.00\nTX | 2026-04-12 | Rent | -1120.00\nTX | 2026-04-20 | Utilities | -184.35\nClosing Balance: 3595.65",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 1",
+        "iban_masked": "DE89 **** **** 1000",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2400.0,
+        "closing_balance": 3595.65,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-02",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-12",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-20",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20001",
+      "filename": "STMT-20001.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20001.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "65ef307efc21dbeaac88491441357a12c3be825e3ab3d1449b7c39a8e43a539a",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 2\nIBAN: DE89 **** **** 1001\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2515.25\nTX | 2026-04-03 | Salary | 2500.00\nTX | 2026-04-13 | Rent | -1120.00\nTX | 2026-04-21 | Utilities | -184.35\nClosing Balance: 3710.90",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 2",
+        "iban_masked": "DE89 **** **** 1001",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2515.25,
+        "closing_balance": 3710.9,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-03",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-13",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-21",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20002",
+      "filename": "STMT-20002.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20002.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "4c38a2896d0e5a248816628b37c5089d8f0f20b566bfdf6a00379da6f65d3039",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 3\nIBAN: DE89 **** **** 1002\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2630.50\nTX | 2026-04-04 | Salary | 2500.00\nTX | 2026-04-14 | Rent | -1120.00\nTX | 2026-04-22 | Utilities | -184.35\nClosing Balance: 3826.15",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 3",
+        "iban_masked": "DE89 **** **** 1002",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2630.5,
+        "closing_balance": 3826.15,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-04",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-14",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-22",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "image_only",
+        "low_contrast"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20003",
+      "filename": "STMT-20003.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20003.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "26a0650fcb47a538f79538d830cee8383154696bca7548c188390bc9eb1be51d",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 4\nIBAN: DE89 **** **** 1003\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2745.75\nTX | 2026-04-05 | Salary | 2500.00\nTX | 2026-04-15 | Rent | -1120.00\nTX | 2026-04-23 | Utilities | -184.35\nClosing Balance: 3941.40",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 4",
+        "iban_masked": "DE89 **** **** 1003",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2745.75,
+        "closing_balance": 3941.4,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-05",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-15",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-23",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20004",
+      "filename": "STMT-20004.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20004.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "cefef950dcb0c8ca50cb5ac57bd0d73f5222eb1e4160f84811965fc40f2d6d91",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 5\nIBAN: DE89 **** **** 1004\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2861.00\nTX | 2026-04-06 | Salary | 2500.00\nTX | 2026-04-16 | Rent | -1120.00\nTX | 2026-04-24 | Utilities | -184.35\nClosing Balance: 4056.65",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 5",
+        "iban_masked": "DE89 **** **** 1004",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2861.0,
+        "closing_balance": 4056.65,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-06",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-16",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-24",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "rotation"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20005",
+      "filename": "STMT-20005.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20005.png",
+      "mime_type": "image/png",
+      "sha256": "1075d85fdb2739eaf85c331c41ece147743c65b192eaed886d0f14517586c317",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 6\nIBAN: DE89 **** **** 1005\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 2976.25\nTX | 2026-04-07 | Salary | 2500.00\nTX | 2026-04-17 | Rent | -1120.00\nTX | 2026-04-25 | Utilities | -184.35\nClosing Balance: 4171.90",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 6",
+        "iban_masked": "DE89 **** **** 1005",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 2976.25,
+        "closing_balance": 4171.9,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-07",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-17",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-25",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20006",
+      "filename": "STMT-20006.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20006.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "a5155a22a117fd7386688215ea3caffe9a7da05484b03401db5d0dfb842033d5",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 7\nIBAN: DE89 **** **** 1006\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3091.50\nTX | 2026-04-08 | Salary | 2500.00\nTX | 2026-04-18 | Rent | -1120.00\nTX | 2026-05-04 | Utilities | -184.35\nClosing Balance: 4287.15",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 7",
+        "iban_masked": "DE89 **** **** 1006",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3091.5,
+        "closing_balance": 4287.15,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-08",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-18",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-05-04",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "odd_dates"
+      ],
+      "needs_review": true,
+      "review_reason": "A transaction date falls outside the statement period.",
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20007",
+      "filename": "STMT-20007.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20007.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "feacea57ea35c3b8e1276ddb060cf9410a335987bdfc6c18d87b76f82bd94cd2",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 8\nIBAN: DE89 **** **** 1007\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3206.75\nTX | 2026-04-09 | Salary | 2500.00\nTX | 2026-04-19 | Rent | -1120.00\nTX | 2026-04-27 | Utilities | -184.35\nClosing Balance: 4402.40",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 8",
+        "iban_masked": "DE89 **** **** 1007",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3206.75,
+        "closing_balance": 4402.4,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-09",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-19",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-27",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20008",
+      "filename": "STMT-20008.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20008.png",
+      "mime_type": "image/png",
+      "sha256": "5c38745aff3ff83355813df181144aa68ec0b7a876f731c1929b7dd8c72cf104",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 9\nIBAN: DE89 **** **** 1008\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3322.00\nTX | 2026-04-10 | Salary | 2500.00\nTX | 2026-04-20 | Rent | -1120.00\nTX | 2026-04-20 | Utilities | -184.35\nClosing Balance: 4616.65",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 9",
+        "iban_masked": "DE89 **** **** 1008",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3322.0,
+        "closing_balance": 4616.65,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-10",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-20",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-20",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "balance_mismatch"
+      ],
+      "needs_review": true,
+      "review_reason": "Opening balance plus transactions does not equal closing balance.",
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20009",
+      "filename": "STMT-20009.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20009.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "21113a27d18c9c6c40c84cd87826355a20aaf2d164bb224becc7808a7755ca3f",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 10\nIBAN: DE89 **** **** 1009\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3437.25\nTX | 2026-04-11 | Salary | 2500.00\nTX | 2026-04-21 | Rent | -1120.00\nTX | 2026-04-21 | Utilities | -184.35\nClosing Balance: 4632.90",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 10",
+        "iban_masked": "DE89 **** **** 1009",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3437.25,
+        "closing_balance": 4632.9,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-11",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-21",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-21",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20010",
+      "filename": "STMT-20010.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20010.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "2983212cffe86ecd2b95ba710fddbbaeb486b375e32217d6a3f9f34f842b466b",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 11\nIBAN: DE89 **** **** 1010\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3552.50\nTX | 2026-04-02 | Salary | 2500.00\nTX | 2026-04-12 | Rent | -1120.00\nTX | 2026-04-22 | Utilities | -184.35\nClosing Balance: 4748.15",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 11",
+        "iban_masked": "DE89 **** **** 1010",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3552.5,
+        "closing_balance": 4748.15,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-02",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-12",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-22",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "multi_page"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20011",
+      "filename": "STMT-20011.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20011.png",
+      "mime_type": "image/png",
+      "sha256": "2f9846dd2e8d4ca1475690c842bd35346115b4a692fb754e62387e8c21b765ed",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 12\nIBAN: DE89 **** **** 1011\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3667.75\nTX | 2026-04-03 | Salary | 2500.00\nTX | 2026-04-13 | Rent | -1120.00\nTX | 2026-04-23 | Utilities | -184.35\nClosing Balance: 4863.40",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 12",
+        "iban_masked": "DE89 **** **** 1011",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3667.75,
+        "closing_balance": 4863.4,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-03",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-13",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-23",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20012",
+      "filename": "STMT-20012.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20012.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "0ec5adb781c84e0c2c4e4fa0b3ba9ca3a432a8704cf16deba6c36d4db7038186",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 13\nIBAN: DE89 **** **** 1012\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3783.00\nTX | 2026-04-04 | Salary | 2500.00\nTX | 2026-04-14 | Rent | -1120.00\nTX | 2026-04-24 | Utilities | -184.35\nClosing Balance: 4978.65",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 13",
+        "iban_masked": "DE89 **** **** 1012",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3783.0,
+        "closing_balance": 4978.65,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-04",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-14",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-24",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "image_only",
+        "low_contrast"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20013",
+      "filename": "STMT-20013.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20013.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "03eabc00394e43d8089864b340061d0d8bdb98efa1dda485286ef4e199c5fdd0",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 14\nIBAN: DE89 **** **** 1013\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 3898.25\nTX | 2026-04-05 | Salary | 2500.00\nTX | 2026-04-15 | Rent | -1120.00\nTX | 2026-04-25 | Utilities | -184.35\nClosing Balance: 5093.90",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 14",
+        "iban_masked": "DE89 **** **** 1013",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 3898.25,
+        "closing_balance": 5093.9,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-05",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-15",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-25",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20014",
+      "filename": "STMT-20014.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20014.png",
+      "mime_type": "image/png",
+      "sha256": "208438f1f349e46c4b9d9b326ec06cddd0b6f36fb5078d1abcef98c757cf40e5",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 15\nIBAN: DE89 **** **** 1014\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4013.50\nTX | 2026-04-06 | Salary | 2500.00\nTX | 2026-04-16 | Rent | -1120.00\nTX | 2026-04-26 | Utilities | -184.35\nClosing Balance: 5209.15",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 15",
+        "iban_masked": "DE89 **** **** 1014",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4013.5,
+        "closing_balance": 5209.15,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-06",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-16",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-26",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "handwritten_annotation",
+        "severe_blur"
+      ],
+      "needs_review": true,
+      "review_reason": "OCR quality is too low around closing balance.",
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20015",
+      "filename": "STMT-20015.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20015.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "3db5f0b6091d1239927402b9b478a4cd7eb3c45df6519345f38c1ca65e44b0df",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 16\nIBAN: DE89 **** **** 1015\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4128.75\nTX | 2026-04-07 | Salary | 2500.00\nTX | 2026-04-17 | Rent | -1120.00\nTX | 2026-04-27 | Utilities | -184.35\nClosing Balance: 5324.40",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 16",
+        "iban_masked": "DE89 **** **** 1015",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4128.75,
+        "closing_balance": 5324.4,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-07",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-17",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-27",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20016",
+      "filename": "STMT-20016.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20016.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "5c9520b1b4593243597471acf6310fabaa5712cc25630fba84198354a25c6b8e",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 17\nIBAN: DE89 **** **** 1016\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4244.00\nTX | 2026-04-08 | Salary | 2500.00\nTX | 2026-04-18 | Rent | -1120.00\nTX | 2026-04-20 | Utilities | -184.35\nClosing Balance: 5439.65",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 17",
+        "iban_masked": "DE89 **** **** 1016",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4244.0,
+        "closing_balance": 5439.65,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-08",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-18",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-20",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20017",
+      "filename": "STMT-20017.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20017.png",
+      "mime_type": "image/png",
+      "sha256": "bcd42be639d8d0b82274b69cca6d704d456516d1a63b836e095dd86cfda769fa",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 18\nIBAN: DE89 **** **** 1017\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4359.25\nTX | 2026-04-09 | Salary | 2500.00\nTX | 2026-04-19 | Rent | -1120.00\nTX | 2026-04-21 | Utilities | -184.35\nClosing Balance: 5554.90",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 18",
+        "iban_masked": "DE89 **** **** 1017",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4359.25,
+        "closing_balance": 5554.9,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-09",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-19",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-21",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [
+        "unusual_layout"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20018",
+      "filename": "STMT-20018.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20018.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "7c85965384804b802ddec5f7741494bf2c13e55763daa7635666858fbdad2b26",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 19\nIBAN: DE89 **** **** 1018\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4474.50\nTX | 2026-04-10 | Salary | 2500.00\nTX | 2026-04-20 | Rent | -1120.00\nTX | 2026-04-22 | Utilities | -184.35\nClosing Balance: 5670.15",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 19",
+        "iban_masked": "DE89 **** **** 1018",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4474.5,
+        "closing_balance": 5670.15,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-10",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-20",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-22",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "STMT-20019",
+      "filename": "STMT-20019.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\bank_statement\\STMT-20019.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "60b8e73b974e805921dc125e1ad34a6a96ec86d29f9268043bd1b6cbb677c3d8",
+      "document_type": "bank_statement",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "BANK STATEMENT\nAccount Holder: Morgan Ellis 20\nIBAN: DE89 **** **** 1019\nPeriod Start: 2026-04-01\nPeriod End: 2026-04-30\nCurrency: EUR\nOpening Balance: 4589.75\nTX | 2026-04-11 | Salary | 2500.00\nTX | 2026-04-21 | Rent | -1120.00\nTX | 2026-04-23 | Utilities | -184.35\nClosing Balance: 5785.40",
+      "ground_truth": {
+        "document_type": "bank_statement",
+        "account_holder": "Morgan Ellis 20",
+        "iban_masked": "DE89 **** **** 1019",
+        "period_start": "2026-04-01",
+        "period_end": "2026-04-30",
+        "opening_balance": 4589.75,
+        "closing_balance": 5785.4,
+        "currency": "EUR",
+        "transactions": [
+          {
+            "date": "2026-04-11",
+            "description": "Salary",
+            "amount": 2500.0
+          },
+          {
+            "date": "2026-04-21",
+            "description": "Rent",
+            "amount": -1120.0
+          },
+          {
+            "date": "2026-04-23",
+            "description": "Utilities",
+            "amount": -184.35
+          }
+        ]
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 9,
+      "required_field_count": 6,
+      "numeric_field_count": 5
+    },
+    {
+      "id": "APP-30000",
+      "filename": "APP-30000.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30000.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "b56d1cb9247ee697dd773ab547150bbff0c37efb0bf6b9a83ed329ab6476052d",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 1\nDate of Birth: 1990-06-15\nEmail: alex.taylor1@example.test\nPhone: +49 151 555 1200\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 1",
+        "date_of_birth": "1990-06-15",
+        "email": "alex.taylor1@example.test",
+        "phone": "+49 151 555 1200",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30001",
+      "filename": "APP-30001.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30001.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "42ac7796ce30e0e735c50446806dba79bd6fba77bb2bd48f30b1d16a53910294",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 2\nDate of Birth: 1991-06-15\nEmail: alex.taylor.example.test\nPhone: +49 151 555 1201\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 2",
+        "date_of_birth": "1991-06-15",
+        "email": "alex.taylor.example.test",
+        "phone": "+49 151 555 1201",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "invalid_email"
+      ],
+      "needs_review": true,
+      "review_reason": "Email format is invalid.",
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30002",
+      "filename": "APP-30002.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30002.png",
+      "mime_type": "image/png",
+      "sha256": "dc0e6c52914a267496a1141cd8ba906e81371c1c854617861ae79ef496d330a7",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 3\nDate of Birth: 1992-06-15\nEmail: alex.taylor3@example.test\nPhone: +49 151 555 1202\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 3",
+        "date_of_birth": "1992-06-15",
+        "email": "alex.taylor3@example.test",
+        "phone": "+49 151 555 1202",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30003",
+      "filename": "APP-30003.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30003.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "8191db38bdf79806e1e973fa02a6e93297bfe23a8572633d6d16956e20570e7b",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 4\nDate of Birth: 1993-06-15\nEmail: \nPhone: +49 151 555 1203\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 4",
+        "date_of_birth": "1993-06-15",
+        "email": null,
+        "phone": "+49 151 555 1203",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "missing_fields"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30004",
+      "filename": "APP-30004.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30004.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "5215900204f5d87b550bf59c25f7df0c4c70af11167ce860f542089d811f8133",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 5\nDate of Birth: 1994-06-15\nEmail: alex.taylor5@example.test\nPhone: +49 151 555 1204\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 5",
+        "date_of_birth": "1994-06-15",
+        "email": "alex.taylor5@example.test",
+        "phone": "+49 151 555 1204",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30005",
+      "filename": "APP-30005.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30005.png",
+      "mime_type": "image/png",
+      "sha256": "0bb6d2a05286f43c61b451a4aa2e35687a490381401d6f2e178548207d7eba2d",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 6\nDate of Birth: 1995-06-15\nEmail: alex.taylor6@example.test\nPhone: 12\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 6",
+        "date_of_birth": "1995-06-15",
+        "email": "alex.taylor6@example.test",
+        "phone": "12",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "odd_phone"
+      ],
+      "needs_review": true,
+      "review_reason": "Phone length is outside the supported range.",
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30006",
+      "filename": "APP-30006.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30006.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "02b586bb7ebbbc71e1f28030d8610a41be94c542f739c48c1d8d510d3b2577de",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 7\nDate of Birth: 1996-06-15\nEmail: alex.taylor7@example.test\nPhone: +49 151 555 1206\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 7",
+        "date_of_birth": "1996-06-15",
+        "email": "alex.taylor7@example.test",
+        "phone": "+49 151 555 1206",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30007",
+      "filename": "APP-30007.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30007.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "d8b2e74901bcba87479825542863a8009a3442387f7b24b6a919533fc7113b87",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 8\nDate of Birth: 1997-06-15\nEmail: alex.taylor8@example.test\nPhone: +49 151 555 1207\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 8",
+        "date_of_birth": "1997-06-15",
+        "email": "alex.taylor8@example.test",
+        "phone": "+49 151 555 1207",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "rotation",
+        "low_contrast"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30008",
+      "filename": "APP-30008.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30008.png",
+      "mime_type": "image/png",
+      "sha256": "4bda45ed54b3bd2bec0beb8df526679c4ce454053bd6c003b93bb767ed9df374",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 9\nDate of Birth: 1998-06-15\nEmail: alex.taylor9@example.test\nPhone: +49 151 555 1208\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 9",
+        "date_of_birth": "1998-06-15",
+        "email": "alex.taylor9@example.test",
+        "phone": "+49 151 555 1208",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30009",
+      "filename": "APP-30009.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30009.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "eafc4cbe33ed104e1747743c5fbe58c00f7a37ae7d59a093fdaf6c2cd15c2a80",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 10\nDate of Birth: 1999-06-15\nEmail: alex.taylor10@example.test\nPhone: +49 151 555 1209\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 10",
+        "date_of_birth": "1999-06-15",
+        "email": "alex.taylor10@example.test",
+        "phone": "+49 151 555 1209",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "unusual_layout"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30010",
+      "filename": "APP-30010.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30010.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "92cfdebdd2e9e00a3b1c27ab28bf859e0f4df178ca20a723bff04d0c1e59c8da",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 11\nDate of Birth: 1990-06-15\nEmail: alex.taylor11@example.test\nPhone: +49 151 555 1210\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 11",
+        "date_of_birth": "1990-06-15",
+        "email": "alex.taylor11@example.test",
+        "phone": "+49 151 555 1210",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30011",
+      "filename": "APP-30011.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30011.png",
+      "mime_type": "image/png",
+      "sha256": "d6f1322f1ed19c988f712cfabc0b49b797b3faf2162ae8293ffa562bdc13c5d1",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 12\nDate of Birth: 1991-06-15\nEmail: alex.taylor.example.test\nPhone: +49 151 555 1211\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 12",
+        "date_of_birth": "1991-06-15",
+        "email": "alex.taylor.example.test",
+        "phone": "+49 151 555 1211",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "invalid_email"
+      ],
+      "needs_review": true,
+      "review_reason": "Email format is invalid.",
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30012",
+      "filename": "APP-30012.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30012.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "925a8e494ecfa3c1d2b0faf764febbf7ff5402fa1bcd34a3325ee83d55ac8539",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 13\nDate of Birth: 1992-06-15\nEmail: alex.taylor13@example.test\nPhone: +49 151 555 1212\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 13",
+        "date_of_birth": "1992-06-15",
+        "email": "alex.taylor13@example.test",
+        "phone": "+49 151 555 1212",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30013",
+      "filename": "APP-30013.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30013.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "2e862cdfcb4f650bfe0acae4a515dd0a2a3b56c70ef511a05169fff23b5b43ad",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 14\nDate of Birth: 1993-06-15\nEmail: alex.taylor14@example.test\nPhone: +49 151 555 1213\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 14",
+        "date_of_birth": "1993-06-15",
+        "email": "alex.taylor14@example.test",
+        "phone": "+49 151 555 1213",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "multi_page"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30014",
+      "filename": "APP-30014.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30014.png",
+      "mime_type": "image/png",
+      "sha256": "d7dc44cbdf4dc252348e976098abb97585e3a37fef14242a811cc501a2abc556",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 15\nDate of Birth: 1994-06-15\nEmail: alex.taylor15@example.test\nPhone: +49 151 555 1214\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 15",
+        "date_of_birth": "1994-06-15",
+        "email": "alex.taylor15@example.test",
+        "phone": "+49 151 555 1214",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30015",
+      "filename": "APP-30015.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30015.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "a65f5af45d91a6bb15990acedfcec13e980848dcd88ab098d5b02a2042f74041",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 16\nDate of Birth: 1995-06-15\nEmail: alex.taylor16@example.test\nPhone: +49 151 555 1215\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 16",
+        "date_of_birth": "1995-06-15",
+        "email": "alex.taylor16@example.test",
+        "phone": "+49 151 555 1215",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30016",
+      "filename": "APP-30016.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30016.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "0c2073fff59cbdbb716a6e0f5e197c8e5ace166a1b5731b4b2200c2da8b723b4",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 17\nDate of Birth: 1996-06-15\nEmail: alex.taylor17@example.test\nPhone: +49 151 555 1216\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 17",
+        "date_of_birth": "1996-06-15",
+        "email": "alex.taylor17@example.test",
+        "phone": "+49 151 555 1216",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [
+        "noisy_scan"
+      ],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30017",
+      "filename": "APP-30017.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30017.png",
+      "mime_type": "image/png",
+      "sha256": "5e4b1e8be5c252fddb417073a909dedf3be43dba59e8c13b41b6019fafd02737",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 18\nDate of Birth: 1997-06-15\nEmail: alex.taylor18@example.test\nPhone: +49 151 555 1217\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 18",
+        "date_of_birth": "1997-06-15",
+        "email": "alex.taylor18@example.test",
+        "phone": "+49 151 555 1217",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30018",
+      "filename": "APP-30018.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30018.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "c10e72a9220b2464c25518c3f4e80d6d253f96573fea11c9afa1eb7736add6b8",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 19\nDate of Birth: 1998-06-15\nEmail: alex.taylor19@example.test\nPhone: +49 151 555 1218\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 19",
+        "date_of_birth": "1998-06-15",
+        "email": "alex.taylor19@example.test",
+        "phone": "+49 151 555 1218",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "APP-30019",
+      "filename": "APP-30019.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\customer_application\\APP-30019.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "dbddbae6d6c8342443c13a34b0750eac9880daf5284de565e64b0928948528c0",
+      "document_type": "customer_application",
+      "classification_reason": "Multiple independent structural signals matched the supported schema.",
+      "source_text": "CUSTOMER APPLICATION\nFull Name: Alex Taylor 20\nDate of Birth: 1999-06-15\nEmail: alex.taylor20@example.test\nPhone: +49 151 555 1219\nCountry: Germany\nRequested Product: Business Current Account",
+      "ground_truth": {
+        "document_type": "customer_application",
+        "full_name": "Alex Taylor 20",
+        "date_of_birth": "1999-06-15",
+        "email": "alex.taylor20@example.test",
+        "phone": "+49 151 555 1219",
+        "country": "Germany",
+        "requested_product": "Business Current Account"
+      },
+      "edge_cases": [],
+      "needs_review": false,
+      "review_reason": null,
+      "field_count": 7,
+      "required_field_count": 1,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "DOC-40000",
+      "filename": "DOC-40000.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\unknown\\DOC-40000.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "56e90e65bcb3926359001a4521fde347e4899e732a2dd47e34d585a38409b72d",
+      "document_type": "unknown",
+      "classification_reason": "The text does not contain enough structural signals for a supported document type.",
+      "source_text": "WAREHOUSE SAFETY CHECKLIST\nForklift inspection complete\nEmergency exit clear",
+      "ground_truth": null,
+      "edge_cases": [
+        "unsupported_type"
+      ],
+      "needs_review": true,
+      "review_reason": "Unsupported or unclear document type; no extraction schema was forced.",
+      "field_count": 0,
+      "required_field_count": 0,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "DOC-40001",
+      "filename": "DOC-40001.jpg",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\unknown\\DOC-40001.jpg",
+      "mime_type": "image/jpeg",
+      "sha256": "d563af819cf1b5c950af9c682277594c1caff6ba4b6e1340bd236891ee48feb9",
+      "document_type": "unknown",
+      "classification_reason": "The text does not contain enough structural signals for a supported document type.",
+      "source_text": "RESTAURANT MENU\nSeasonal soup\nGrilled vegetables\nApple tart",
+      "ground_truth": null,
+      "edge_cases": [
+        "unsupported_type"
+      ],
+      "needs_review": true,
+      "review_reason": "Unsupported or unclear document type; no extraction schema was forced.",
+      "field_count": 0,
+      "required_field_count": 0,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "DOC-40002",
+      "filename": "DOC-40002.png",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\unknown\\DOC-40002.png",
+      "mime_type": "image/png",
+      "sha256": "453bd6bd4421d66fe785707dfcfc86e02fd7aef940c97fd54dd4c42ae9599ddf",
+      "document_type": "unknown",
+      "classification_reason": "The text does not contain enough structural signals for a supported document type.",
+      "source_text": "PROJECT MEETING NOTES\nTimeline discussion\nOwners assigned\nNext meeting Friday",
+      "ground_truth": null,
+      "edge_cases": [
+        "unsupported_type"
+      ],
+      "needs_review": true,
+      "review_reason": "Unsupported or unclear document type; no extraction schema was forced.",
+      "field_count": 0,
+      "required_field_count": 0,
+      "numeric_field_count": 0
+    },
+    {
+      "id": "DOC-40003",
+      "filename": "DOC-40003.pdf",
+      "path": "C:\\Codex\\19\\2_Document Intelligence Pipeline\\data\\synthetic_documents\\unknown\\DOC-40003.pdf",
+      "mime_type": "application/pdf",
+      "sha256": "cb4402a5605a1500ed459508947e6d9f8476685f2bf2dddcc7aa74dd99f8e04c",
+      "document_type": "unknown",
+      "classification_reason": "The text does not contain enough structural signals for a supported document type.",
+      "source_text": "SHIPPING LABEL\nContainer 00918\nPort of Hamburg\nDock 4",
+      "ground_truth": null,
+      "edge_cases": [
+        "unsupported_type"
+      ],
+      "needs_review": true,
+      "review_reason": "Unsupported or unclear document type; no extraction schema was forced.",
+      "field_count": 0,
+      "required_field_count": 0,
+      "numeric_field_count": 0
+    }
+  ]
+}

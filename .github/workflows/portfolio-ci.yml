@@ -15,6 +15,7 @@ concurrency:
 
 env:
   NEXORA_DIR: nexora-ai-operations-platform
+  DOCINTEL_DIR: document-intelligence-pipeline
 
 jobs:
   nexora-backend:
@@ -91,6 +92,91 @@ jobs:
     defaults:
       run:
         working-directory: nexora-ai-operations-platform
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Compose model
+        run: docker compose --env-file .env.example config --quiet
+
+      - name: Build application images
+        run: docker compose --env-file .env.example build backend frontend
+
+  docintel-backend:
+    name: DocIntel backend · Ruff and pytest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: document-intelligence-pipeline/backend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: document-intelligence-pipeline/backend/pyproject.toml
+
+      - name: Install backend with development dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Lint
+        run: python -m ruff check app tests
+
+      - name: Test
+        env:
+          DOCINTEL_ENVIRONMENT: test
+          DOCINTEL_PROVIDER_MODE: mock
+          DOCINTEL_SEED_DEMO: "false"
+        run: python -m pytest
+
+  docintel-frontend:
+    name: DocIntel frontend · typecheck, test, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: document-intelligence-pipeline/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: document-intelligence-pipeline/frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Build
+        env:
+          VITE_API_BASE_URL: /api/v1
+        run: pnpm run build
+
+  docintel-containers:
+    name: DocIntel Docker · validate and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: document-intelligence-pipeline
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
