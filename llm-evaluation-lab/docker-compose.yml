@@ -1,0 +1,98 @@
+name: ${COMPOSE_PROJECT_NAME:-evalforge}
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-security: &default-security
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-evalforge}
+      POSTGRES_USER: ${POSTGRES_USER:-evalforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-replace-for-any-shared-environment}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5435}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 4s
+      retries: 15
+      start_period: 8s
+    networks:
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    init: true
+    env_file:
+      - path: .env.example
+        required: true
+      - path: ../nexora-ai-operations-platform/.env.local
+        required: false
+      - path: ../nexora-ai-operations-platform/.env.aiprimetech.local
+        required: false
+      - path: .env
+        required: false
+      - path: .env.local
+        required: false
+    environment:
+      EVALFORGE_DATABASE_URL: "postgresql+psycopg://${POSTGRES_USER:-evalforge}:${POSTGRES_PASSWORD:-replace-for-any-shared-environment}@postgres:5432/${POSTGRES_DB:-evalforge}"
+      EVALFORGE_DATASET_PATH: /app/data/datasets/evalforge_cases.jsonl
+      EVALFORGE_GIT_COMMIT: ${EVALFORGE_GIT_COMMIT:-unavailable}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8003}:8000"
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - edge
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3003}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - edge
+    <<: *default-security
+    logging: *default-logging
+
+volumes:
+  postgres_data:
+
+networks:
+  edge:
+  data:
+    internal: true

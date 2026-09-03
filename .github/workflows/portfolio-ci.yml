@@ -16,6 +16,7 @@ concurrency:
 env:
   NEXORA_DIR: nexora-ai-operations-platform
   DOCINTEL_DIR: document-intelligence-pipeline
+  EVALFORGE_DIR: llm-evaluation-lab
 
 jobs:
   nexora-backend:
@@ -177,6 +178,87 @@ jobs:
     defaults:
       run:
         working-directory: document-intelligence-pipeline
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Compose model
+        run: docker compose --env-file .env.example config --quiet
+
+      - name: Build application images
+        run: docker compose --env-file .env.example build backend frontend
+
+  evalforge-backend:
+    name: EvalForge backend · Ruff and pytest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: llm-evaluation-lab/backend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: llm-evaluation-lab/backend/pyproject.toml
+
+      - name: Install backend with development dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Lint
+        run: python -m ruff check app tests
+
+      - name: Test
+        run: python -m pytest
+
+  evalforge-frontend:
+    name: EvalForge frontend · typecheck, test, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: llm-evaluation-lab/frontend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: llm-evaluation-lab/frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Build
+        env:
+          VITE_API_BASE_URL: /api/v1
+        run: pnpm run build
+
+  evalforge-containers:
+    name: EvalForge Docker · validate and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: llm-evaluation-lab
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

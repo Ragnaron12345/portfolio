@@ -24,26 +24,27 @@ A document operations workbench for hybrid PDF/OCR extraction, strict structured
 
 **Highlights:** native PDF extraction with per-page OCR fallback, invoice/statement/application schemas, rule-level validation, confidence-based routing, in-app source preview, audited edit-and-approve workflow, a checked-in 64-file synthetic corpus, and baseline/improved evaluation across ten metrics.
 
+### [EvalForge — LLM Evaluation Lab](llm-evaluation-lab)
+
+A reproducible evaluation platform for comparing LLMs, prompt versions, and RAG configurations with quality, safety, latency, cost, and pairwise regression evidence.
+
+[![EvalForge evaluation overview](llm-evaluation-lab/docs/images/evalforge-overview.png)](llm-evaluation-lab)
+
+**Stack:** FastAPI, React, TypeScript, PostgreSQL, SQLAlchemy, Recharts, Docker Compose
+
+**Highlights:** exact model × prompt × retrieval × case matrices, bounded asynchronous execution with retries and partial persistence, immutable run snapshots, deterministic and judge metrics, a 56-case seven-category benchmark, failure evidence, RAG chunk inspection, and persisted Markdown/JSON reports.
+
 ## Repository structure
 
 ```text
 portfolio/
 ├── nexora-ai-operations-platform/
-    ├── backend/
-    ├── frontend/
-    ├── docs/
-    │   ├── api.md
-    │   ├── architecture.md
-    │   ├── evaluation.md
-    │   └── security.md
-    ├── docker-compose.yml
-    └── README.md
-└── document-intelligence-pipeline/
+├── document-intelligence-pipeline/
+└── llm-evaluation-lab/
     ├── backend/
     ├── frontend/
     ├── data/
     ├── docs/
-    ├── scripts/
     ├── docker-compose.yml
     └── README.md
 ```
