@@ -1,21 +1,21 @@
-# DocIntel — Document Processing & Validation
+# DocIntel - Document Processing & Validation
 
 A platform for extracting structured data from documents (invoices, statements, applications) with business validation and human review workflows.
 
 ![DocIntel documents workspace](docs/design-concepts/documents-desktop.png)
 
-**What it demonstrates:** End-to-end document AI pipeline — from upload to validated structured data, with explainable confidence scoring.
+**What it demonstrates:** End-to-end document AI pipeline - from upload to validated structured data, with explainable confidence scoring.
 
 ---
 
 ## Key Features
 
-- **Multi-format support** — PDF, PNG, JPG with automatic OCR fallback
-- **Document classification** — identifies invoice, bank statement, or application type
-- **Structured extraction** — pulls specific fields with Pydantic validation
-- **Business rules** — validates totals, dates, required fields
-- **Confidence scoring** — shows exactly why a document needs review
-- **Human review queue** — approve, reject, or edit before final decision
+- **Multi-format support** - PDF, PNG, JPG with automatic OCR fallback
+- **Document classification** - identifies invoice, bank statement, or application type
+- **Structured extraction** - pulls specific fields with Pydantic validation
+- **Business rules** - validates totals, dates, required fields
+- **Confidence scoring** - shows exactly why a document needs review
+- **Human review queue** - approve, reject, or edit before final decision
 - **64 test documents** with measurable accuracy metrics
 
 ---

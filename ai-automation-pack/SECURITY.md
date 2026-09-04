@@ -14,7 +14,7 @@
 - Rejection never performs a side effect. Approval still passes deterministic gates.
 - Side effects carry execution IDs and idempotency keys; bounded retries are recorded.
 - Every automated decision carries a human-readable reason and audit context.
-- Prompt-injection phrases are treated as document content — they cannot change system policy or credentials.
+- Prompt-injection phrases are treated as document content - they cannot change system policy or credentials.
 
 ## Secrets
 
@@ -23,7 +23,7 @@
 - `OPENAI_API_KEY` belongs only in `.env.local` or a production secret manager.
 - `AUTOMATION_INTERNAL_TOKEN` authenticates n8n to internal API routes.
 - `N8N_ENCRYPTION_KEY` protects n8n credential storage.
-- Do not expose secrets through `VITE_*` variables — those are bundled into browser JavaScript.
+- Do not expose secrets through `VITE_*` variables - those are bundled into browser JavaScript.
 - Do not put secrets in workflow JSON, screenshots, logs, fixtures, docs, or Git history.
 
 ## Network controls

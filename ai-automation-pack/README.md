@@ -1,21 +1,21 @@
-# Flowline — AI Automation Orchestration
+# Flowline - AI Automation Orchestration
 
 An operations console for end-to-end AI automations: support triage, invoice processing, and incident management with human approval gates.
 
 ![Flowline workflow operations](docs/images/overview-runtime.png)
 
-**What it demonstrates:** Real-world AI workflow orchestration — not just AI calls, but complete business processes with error handling, approvals, and audit trails.
+**What it demonstrates:** Real-world AI workflow orchestration - not just AI calls, but complete business processes with error handling, approvals, and audit trails.
 
 ---
 
 ## Key Features
 
-- **AI Support Triage** — classifies tickets, retrieves knowledge, drafts responses
-- **Invoice Processing** — extracts data, validates arithmetic, detects duplicates
-- **Incident Management** — deduplicates alerts, creates Jira issues, notifies teams
-- **Human Approval Gates** — sensitive operations require human sign-off
-- **Complete Audit Trail** — every decision, retry, and action is logged
-- **Error Handling** — failures are visible, not hidden
+- **AI Support Triage** - classifies tickets, retrieves knowledge, drafts responses
+- **Invoice Processing** - extracts data, validates arithmetic, detects duplicates
+- **Incident Management** - deduplicates alerts, creates Jira issues, notifies teams
+- **Human Approval Gates** - sensitive operations require human sign-off
+- **Complete Audit Trail** - every decision, retry, and action is logged
+- **Error Handling** - failures are visible, not hidden
 
 ---
 

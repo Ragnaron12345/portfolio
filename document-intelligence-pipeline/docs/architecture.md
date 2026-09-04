@@ -17,7 +17,7 @@ are persisted as distinct evidence.
 9. Persist every stage, duration, provider/model, retry, error, and decision.
 
 The default deterministic provider is deliberately useful and testable offline.
-`openai` mode sends extracted text—not original pixels—to an OpenAI-compatible
+`openai` mode sends extracted text-not original pixels-to an OpenAI-compatible
 Chat Completions endpoint with strict JSON Schema. A failed provider call can
 fall back to deterministic extraction in development/auto flows.
 

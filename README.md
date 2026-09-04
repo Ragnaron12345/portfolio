@@ -10,16 +10,16 @@ A showcase of 4 full-stack AI projects demonstrating practical skills in buildin
 
 | Project | What it does | Key Technologies |
 |---------|-------------|-----------------|
-| **Nexora** | AI customer support — routes requests, retrieves knowledge, executes safe actions | FastAPI, React, PostgreSQL, pgvector |
-| **DocIntel** | Document processing — extracts data from PDFs/images, validates, routes to review | FastAPI, OCR, Pydantic, React |
-| **EvalForge** | AI testing platform — compares models, prompts, measures quality | FastAPI, React, Recharts |
-| **Flowline** | AI automation — processes invoices, incidents, support tickets | n8n, FastAPI, React, PostgreSQL |
+| **Nexora** | AI customer support - routes requests, retrieves knowledge, executes safe actions | FastAPI, React, PostgreSQL, pgvector |
+| **DocIntel** | Document processing - extracts data from PDFs/images, validates, routes to review | FastAPI, OCR, Pydantic, React |
+| **EvalForge** | AI testing platform - compares models, prompts, measures quality | FastAPI, React, Recharts |
+| **Flowline** | AI automation - processes invoices, incidents, support tickets | n8n, FastAPI, React, PostgreSQL |
 
 ---
 
 ## Project Highlights
 
-### Nexora — AI Customer Support Platform
+### Nexora - AI Customer Support Platform
 *AI-powered support system with human oversight*
 
 - Routes customer requests to appropriate handling paths
@@ -32,7 +32,7 @@ A showcase of 4 full-stack AI projects demonstrating practical skills in buildin
 
 ---
 
-### DocIntel — Document Processing & Validation
+### DocIntel - Document Processing & Validation
 *Extracts structured data from documents with quality controls*
 
 - Uploads PDF, PNG, JPG → extracts text (native + OCR fallback)
@@ -45,7 +45,7 @@ A showcase of 4 full-stack AI projects demonstrating practical skills in buildin
 
 ---
 
-### EvalForge — AI Testing & Validation Tool
+### EvalForge - AI Testing & Validation Tool
 *Reproducible benchmarking for AI systems*
 
 - Compares LLM responses across models, prompts, configurations
@@ -58,7 +58,7 @@ A showcase of 4 full-stack AI projects demonstrating practical skills in buildin
 
 ---
 
-### Flowline — AI Automation Orchestration
+### Flowline - AI Automation Orchestration
 *End-to-end automation with approval workflows*
 
 - AI support triage with risk-based escalation
@@ -109,7 +109,7 @@ Each project runs locally with Docker:
 .\manage.ps1 Up
 ```
 
-All projects work offline with deterministic mock data — no external API keys required.
+All projects work offline with deterministic mock data - no external API keys required.
 
 ---
 

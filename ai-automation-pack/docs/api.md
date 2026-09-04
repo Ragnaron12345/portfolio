@@ -127,8 +127,8 @@ A rejected item never invokes CRM or ERP. Approving an invalid invoice acknowled
 
 ## Audit
 
-- `POST /api/v1/audit/events` — protected orchestration write
-- `GET /api/v1/audit/events` — filtered/newest-first audit list
+- `POST /api/v1/audit/events` - protected orchestration write
+- `GET /api/v1/audit/events` - filtered/newest-first audit list
 
 n8n write body:
 

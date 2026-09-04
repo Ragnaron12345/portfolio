@@ -86,7 +86,7 @@ Terminal state is written only after the required audit/action boundary. A n8n t
 
 ## Workflow-specific ownership
 
-n8n orchestrates at the execution boundary: it validates the webhook envelope, invokes the protected workflow API with bounded transport retry, routes the authoritative completed/review/failed/deduplicated state, writes the matching audit outcome, and returns a webhook response. FastAPI deliberately owns the finer domain stages listed in the brief because it also owns structured model contracts, deterministic rules, transactions, idempotency, and side-effect gates. Each fine-grained transition is persisted and rendered in the operator timeline; none is hidden in n8n expression code. This coarse-grained boundary prevents the same policy from being implemented twice while keeping n8n—not the browser or provider—in control of orchestration and error routing.
+n8n orchestrates at the execution boundary: it validates the webhook envelope, invokes the protected workflow API with bounded transport retry, routes the authoritative completed/review/failed/deduplicated state, writes the matching audit outcome, and returns a webhook response. FastAPI deliberately owns the finer domain stages listed in the brief because it also owns structured model contracts, deterministic rules, transactions, idempotency, and side-effect gates. Each fine-grained transition is persisted and rendered in the operator timeline; none is hidden in n8n expression code. This coarse-grained boundary prevents the same policy from being implemented twice while keeping n8n-not the browser or provider-in control of orchestration and error routing.
 
 | Concern | n8n | FastAPI |
 |---|---:|---:|
@@ -153,7 +153,7 @@ flowchart TB
       API
       N8N
     end
-    subgraph data_internal["data network — internal"]
+    subgraph data_internal["data network - internal"]
       API
       N8N
       PG[(PostgreSQL)]

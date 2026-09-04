@@ -2,8 +2,8 @@
 
 The accepted visual references are:
 
-- `docs/concepts/evalforge-overview.png` — primary overview surface at 1536×1024.
-- `docs/concepts/evalforge-run-detail.png` — historical run comparison and immutable configuration drawer at 1536×1024.
+- `docs/concepts/evalforge-overview.png` - primary overview surface at 1536×1024.
+- `docs/concepts/evalforge-run-detail.png` - historical run comparison and immutable configuration drawer at 1536×1024.
 
 ## Direction
 

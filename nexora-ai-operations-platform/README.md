@@ -1,21 +1,21 @@
-# Nexora — AI Customer Support Platform
+# Nexora - AI Customer Support Platform
 
 An AI-powered customer support system with semantic knowledge retrieval, safe tool execution, and human oversight for sensitive operations.
 
 ![Nexora operations overview](docs/images/nexora-overview.jpg)
 
-**What it demonstrates:** Building production-ready AI systems with proper safety controls — not just demos, but systems that know when to escalate to humans.
+**What it demonstrates:** Building production-ready AI systems with proper safety controls - not just demos, but systems that know when to escalate to humans.
 
 ---
 
 ## Key Features
 
-- **Intelligent routing** — classifies requests by intent, topic, and risk level
-- **Knowledge retrieval** — finds relevant answers with source citations
-- **Safe tool execution** — executes only allowlisted actions with validation
-- **Human review workflow** — escalates risky or uncertain requests
-- **Invoice processing** — OCR and structured extraction from uploaded documents
-- **70 test cases** — regression and held-out evaluation sets
+- **Intelligent routing** - classifies requests by intent, topic, and risk level
+- **Knowledge retrieval** - finds relevant answers with source citations
+- **Safe tool execution** - executes only allowlisted actions with validation
+- **Human review workflow** - escalates risky or uncertain requests
+- **Invoice processing** - OCR and structured extraction from uploaded documents
+- **70 test cases** - regression and held-out evaluation sets
 
 ---
 
@@ -29,7 +29,7 @@ Customer Request → Classify Risk → Safe Actions Only
                               Low Risk? → Auto-Execute → Done
 ```
 
-**Risk categories:** low, medium, high — with different handling paths.
+**Risk categories:** low, medium, high - with different handling paths.
 
 ---
 

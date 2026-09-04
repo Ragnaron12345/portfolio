@@ -1,21 +1,21 @@
-# EvalForge — AI Testing & Validation Tool
+# EvalForge - AI Testing & Validation Tool
 
 A working platform for comparing AI models, prompts, and retrieval configurations with measurable quality metrics.
 
 ![EvalForge evaluation overview](docs/images/evalforge-overview.png)
 
-**What it demonstrates:** Building reliable AI evaluation systems — not just prompts, but the entire testing infrastructure that makes AI engineering measurable.
+**What it demonstrates:** Building reliable AI evaluation systems - not just prompts, but the entire testing infrastructure that makes AI engineering measurable.
 
 ---
 
 ## Key Features
 
 - **56 synthetic test cases** across factual QA, summarization, extraction, and adversarial scenarios
-- **Model comparison** — compare responses across different models and configurations
-- **Prompt versioning** — track how changes affect quality over time
-- **RAG evaluation** — measure whether the system retrieves the right sources
-- **Regression detection** — catch quality drops immediately
-- **Cost and latency tracking** — understand the operational trade-offs
+- **Model comparison** - compare responses across different models and configurations
+- **Prompt versioning** - track how changes affect quality over time
+- **RAG evaluation** - measure whether the system retrieves the right sources
+- **Regression detection** - catch quality drops immediately
+- **Cost and latency tracking** - understand the operational trade-offs
 
 ---
 
