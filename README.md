@@ -1,64 +1,128 @@
-# Engineering Portfolio
+# AI Engineering Portfolio
 
-A collection of production-oriented software and AI engineering projects. Each project lives in its own self-contained directory with source code, tests, documentation, and local setup instructions.
+A showcase of 4 full-stack AI projects demonstrating practical skills in building, evaluating, and deploying AI-powered systems.
 
-## Projects
+**Target roles:** AI Engineer Middle/Middle+ | System Analyst Junior+
 
-### [Nexora AI Operations Platform](nexora-ai-operations-platform)
+---
 
-An AI operations platform for retrieval-augmented generation, explainable model routing, controlled tool execution, human review, observability, and repeatable LLM evaluation.
+## Quick Summary
 
-[![Nexora AI Operations Platform overview](nexora-ai-operations-platform/docs/images/nexora-overview.jpg)](nexora-ai-operations-platform)
+| Project | What it does | Key Technologies |
+|---------|-------------|-----------------|
+| **Nexora** | AI customer support — routes requests, retrieves knowledge, executes safe actions | FastAPI, React, PostgreSQL, pgvector |
+| **DocIntel** | Document processing — extracts data from PDFs/images, validates, routes to review | FastAPI, OCR, Pydantic, React |
+| **EvalForge** | AI testing platform — compares models, prompts, measures quality | FastAPI, React, Recharts |
+| **Flowline** | AI automation — processes invoices, incidents, support tickets | n8n, FastAPI, React, PostgreSQL |
 
-**Stack:** FastAPI, React, TypeScript, PostgreSQL, pgvector, Docker Compose
+---
 
-**Highlights:** grounded RAG, risk-aware routing, schema-validated tools, review workflows, trace-level telemetry, typed document routing with native/OCR invoice extraction, plus checked-in 40-case regression and 30-case held-out evaluation evidence.
+## Project Highlights
 
-### [Document Intelligence Pipeline](document-intelligence-pipeline)
+### Nexora — AI Customer Support Platform
+*AI-powered support system with human oversight*
 
-A document operations workbench for hybrid PDF/OCR extraction, strict structured output, deterministic business validation, explainable confidence, human review, and reproducible evaluation.
+- Routes customer requests to appropriate handling paths
+- Retrieves answers from a knowledge base with citations
+- Executes safe actions automatically; escalates risky ones
+- Processes invoices via OCR and structured extraction
+- 70 test cases with measurable quality metrics
 
-[![Document Intelligence Pipeline workspace](document-intelligence-pipeline/docs/qa/documents-1536x1024.png)](document-intelligence-pipeline)
+**Stack:** FastAPI · React · TypeScript · PostgreSQL · pgvector · Docker
 
-**Stack:** FastAPI, React, TypeScript, PostgreSQL, SQLAlchemy, PyMuPDF, Tesseract, Docker Compose
+---
 
-**Highlights:** native PDF extraction with per-page OCR fallback, invoice/statement/application schemas, rule-level validation, confidence-based routing, in-app source preview, audited edit-and-approve workflow, a checked-in 64-file synthetic corpus, and baseline/improved evaluation across ten metrics.
+### DocIntel — Document Processing & Validation
+*Extracts structured data from documents with quality controls*
 
-### [EvalForge — LLM Evaluation Lab](llm-evaluation-lab)
+- Uploads PDF, PNG, JPG → extracts text (native + OCR fallback)
+- Classifies documents: invoice, bank statement, application
+- Validates extracted data against business rules
+- Routes unclear results to human review
+- 64 test documents with measurable accuracy
 
-A reproducible evaluation platform for comparing LLMs, prompt versions, and RAG configurations with quality, safety, latency, cost, and pairwise regression evidence.
+**Stack:** FastAPI · React · TypeScript · PyMuPDF · Tesseract · Pydantic · PostgreSQL
 
-[![EvalForge evaluation overview](llm-evaluation-lab/docs/images/evalforge-overview.png)](llm-evaluation-lab)
+---
 
-**Stack:** FastAPI, React, TypeScript, PostgreSQL, SQLAlchemy, Recharts, Docker Compose
+### EvalForge — AI Testing & Validation Tool
+*Reproducible benchmarking for AI systems*
 
-**Highlights:** exact model × prompt × retrieval × case matrices, bounded asynchronous execution with retries and partial persistence, immutable run snapshots, deterministic and judge metrics, a 56-case seven-category benchmark, failure evidence, RAG chunk inspection, and persisted Markdown/JSON reports.
+- Compares LLM responses across models, prompts, configurations
+- Measures quality, latency, cost, and safety
+- Detects when improvements cause regressions
+- Generates human-readable evaluation reports
+- 56 test cases across multiple AI scenarios
 
-### [Flowline — AI Automation Pack](ai-automation-pack)
+**Stack:** FastAPI · React · TypeScript · Recharts · PostgreSQL · Docker
 
-An auditable automation operations console with n8n orchestration for support triage, invoice processing, and incident intelligence.
+---
 
-[![Flowline workflow operations](ai-automation-pack/docs/images/overview-runtime.png)](ai-automation-pack)
+### Flowline — AI Automation Orchestration
+*End-to-end automation with approval workflows*
 
-**Stack:** n8n, FastAPI, React, TypeScript, PostgreSQL, SQLAlchemy, Docker Compose
+- AI support triage with risk-based escalation
+- Invoice processing with arithmetic validation
+- Incident management with duplicate detection
+- Human approval gates for sensitive operations
+- Complete audit trails for all decisions
 
-**Highlights:** schema-validated AI decisions, confidence and risk routing, human approval queues, idempotent mock CRM/ERP/Jira/Slack integrations, bounded retries, deduplication, trace timelines, audit logs, failure injection, and reproducible end-to-end scenarios.
+**Stack:** n8n · FastAPI · React · PostgreSQL · SQLAlchemy · Docker
 
-## Repository structure
+---
 
-```text
-portfolio/
-├── nexora-ai-operations-platform/
-├── document-intelligence-pipeline/
-├── llm-evaluation-lab/
-└── ai-automation-pack/
-    ├── automation-api/
-    ├── frontend/
-    ├── workflows/
-    ├── fixtures/
-    ├── docs/
-    ├── docker-compose.yml
-    └── README.md
+## Technical Skills Demonstrated
+
+### AI / ML
+- LLM integration (OpenAI-compatible APIs)
+- RAG (Retrieval-Augmented Generation)
+- OCR and document classification
+- Prompt engineering and evaluation
+- Deterministic and LLM-based metrics
+
+### Backend
+- FastAPI with Pydantic v2 validation
+- SQLAlchemy ORM (PostgreSQL, SQLite)
+- Async task processing with bounded retries
+- API design and documentation (OpenAPI)
+- Vector search with pgvector
+
+### Frontend
+- React with TypeScript
+- Professional data dashboards
+- Charts and data visualization (Recharts)
+- Responsive desktop-first UI
+
+### DevOps / Infrastructure
+- Docker and Docker Compose
+- CI/CD workflows
+- Environment configuration management
+
+---
+
+## Running the Projects
+
+Each project runs locally with Docker:
+
+```powershell
+.\manage.ps1 Setup
+.\manage.ps1 Up
 ```
 
-Open a project directory for its complete documentation and startup instructions.
+All projects work offline with deterministic mock data — no external API keys required.
+
+---
+
+## Repository Structure
+
+```
+portfolio/
+├── nexora-ai-operations-platform/      # AI customer support
+├── document-intelligence-pipeline/      # Document processing
+├── llm-evaluation-lab/                 # AI testing platform
+└── ai-automation-pack/                 # Workflow automation
+    ├── automation-api/                 # FastAPI backend
+    ├── frontend/                       # React operator console
+    ├── workflows/                      # n8n workflows
+    └── docs/                           # Technical documentation
+```
