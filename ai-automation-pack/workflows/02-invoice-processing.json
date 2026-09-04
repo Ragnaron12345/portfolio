@@ -1,0 +1,698 @@
+{
+  "id": "InvoiceFlow2609",
+  "name": "Invoice Processing",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "invoice-processing",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4baaf8c9-44b2-4da3-813a-9191555ae6e6",
+      "name": "Receive Invoice Document",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        160
+      ],
+      "webhookId": "0f00a2a1-8256-414e-95e2-c2747a95b915"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "29cfbc30-0df5-41c4-8505-ce21bd08297f",
+              "leftValue": "={{ String($json.body?.execution_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c3e5c826-d10e-4db7-af07-fb3f50e86a94",
+              "leftValue": "={{ String($json.body?.correlation_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "db1de104-0b5f-4c17-87d4-32ea4fddfa2f",
+              "leftValue": "={{ JSON.stringify($json.body?.payload || {}) }}",
+              "rightValue": "{}",
+              "operator": {
+                "type": "string",
+              "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "6ee3e83f-36a2-4785-942f-7af146625a8b",
+      "name": "Validate Invoice Envelope",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -800,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/internal/runs/invoice' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 45000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "4892b859-5890-4a5f-ac2a-23cc46862264",
+      "name": "Extract and Validate Invoice via API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        40
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1500,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "89411462-a3ba-4035-9e15-df213428be89",
+              "leftValue": "={{ String($json.execution_id || $json.id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dd3d9448-aa6c-47aa-9e1b-f421b6e5d041",
+      "name": "Execution Response Available",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -260,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8d9e44c5-9778-4dd5-a8fc-62f8651dc45d",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2a6cb429-118e-4b56-8af4-021467f85098",
+      "name": "Execution Failed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c5e96d4f-f560-4506-be35-3094e86ece60",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "waiting_for_review",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5adb6038-276a-4b16-8323-c371d86d4c6a",
+      "name": "Validation Requires Human Review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Invoice Document').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Invoice Document').item.json.body.execution_id, event_type: 'n8n.invoice.completed', actor: 'n8n', outcome: 'completed', summary: $('Extract and Validate Invoice via API').item.json.decision_summary?.reason || $('Extract and Validate Invoice via API').item.json.decision_summary?.outcome || 'Validated invoice submitted to the ERP mock exactly once', details: { n8n_execution_id: $execution.id, workflow: 'invoice' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "a160e44f-baaa-4185-a554-ffdb213b191e",
+      "name": "Audit ERP Submission",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        200
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Invoice Document').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Invoice Document').item.json.body.execution_id, event_type: 'n8n.invoice.waiting_for_review', actor: 'n8n', outcome: 'review', summary: $('Extract and Validate Invoice via API').item.json.decision_summary?.reason || 'Deterministic validation requires human review; ERP submission was blocked', details: { n8n_execution_id: $execution.id, workflow: 'invoice' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "8c685f0d-2ced-4eed-b16e-53f9aac092bb",
+      "name": "Audit Invoice Review Route",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Invoice Document').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Invoice Document').item.json.body.execution_id, event_type: 'n8n.invoice.failed', actor: 'n8n', outcome: 'failed', summary: $('Extract and Validate Invoice via API').item.json.error?.message || 'Invoice execution failed', details: { n8n_execution_id: $execution.id, workflow: 'invoice' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "51ea7113-c8fd-4cd3-bc5e-3a36abe1bf22",
+      "name": "Audit Failed Invoice Execution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        -80
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Invoice Document').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Invoice Document').item.json.body.execution_id, event_type: 'n8n.invoice.transport_failed', actor: 'n8n', outcome: 'failed', summary: $('Extract and Validate Invoice via API').item.json.error?.message || $('Extract and Validate Invoice via API').item.json.message || 'Internal API call failed after three attempts', details: { n8n_execution_id: $execution.id, workflow: 'invoice' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "f6a26d58-cf4a-4559-b3cd-a0c1db55e1db",
+      "name": "Audit Exhausted API Retries",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        -260
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Invoice Document').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Invoice Document').item.json.body.execution_id, event_type: 'n8n.invoice.invalid_payload', actor: 'n8n', outcome: 'failed', summary: 'Rejected invoice envelope: execution_id, correlation_id and a non-empty payload are required', details: { n8n_execution_id: $execution.id, workflow: 'invoice' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "886034b8-661a-4120-8d24-fcdadd27f9ca",
+      "name": "Audit Invalid Invoice Payload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Extract and Validate Invoice via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "d7563707-005c-44d8-8782-540d1bac0a5e",
+      "name": "Return ERP-Submitted Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Extract and Validate Invoice via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "0958c904-5d53-4704-9834-00f1a339b103",
+      "name": "Return Review Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Extract and Validate Invoice via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "c8125ef7-2671-4573-8d30-74e178fa61a2",
+      "name": "Return Failed Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Invoice Document').item.json.body?.execution_id || null, correlation_id: $('Receive Invoice Document').item.json.body?.correlation_id || null, workflow: 'invoice', current_stage: 'ORCHESTRATION_FAILED', status: 'failed', decision_summary: 'Internal API call failed after bounded retries', error: String($('Extract and Validate Invoice via API').item.json.error?.message || $('Extract and Validate Invoice via API').item.json.message || 'Internal API call failed after three attempts') }) }}",
+        "options": {
+          "responseCode": 502
+        }
+      },
+      "id": "e7503f8e-ee5a-4101-91c1-fc2d75402de1",
+      "name": "Return Bounded Retry Failure",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        300,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Invoice Document').item.json.body?.execution_id || null, correlation_id: $('Receive Invoice Document').item.json.body?.correlation_id || null, workflow: 'invoice', current_stage: 'RECEIVED', status: 'failed', decision_summary: 'Payload rejected before side effects', error: 'execution_id, correlation_id and a non-empty payload are required' }) }}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "97d10c3b-278c-4ae4-99de-f4a1df83361f",
+      "name": "Return Invalid Payload",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -260,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Invoice orchestration boundary\n\nFastAPI owns extraction repair, Pydantic output validation, arithmetic/date/currency/required-field checks, duplicate detection, review creation and idempotent ERP submission. n8n makes the success/review/failure paths explicit and retries only the internal transport call. AI never decides whether the arithmetic is valid.",
+        "height": 300,
+        "width": 720,
+        "color": 3
+      },
+      "id": "fbe431ee-b982-4ec7-9445-3e885edb9848",
+      "name": "Invoice Boundary Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        -220
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Invoice Document": {
+      "main": [
+        [
+          {
+            "node": "Validate Invoice Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Invoice Envelope": {
+      "main": [
+        [
+          {
+            "node": "Extract and Validate Invoice via API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Invalid Invoice Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract and Validate Invoice via API": {
+      "main": [
+        [
+          {
+            "node": "Execution Response Available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Response Available": {
+      "main": [
+        [
+          {
+            "node": "Execution Failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Exhausted API Retries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Failed": {
+      "main": [
+        [
+          {
+            "node": "Audit Failed Invoice Execution",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validation Requires Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Requires Human Review": {
+      "main": [
+        [
+          {
+            "node": "Audit Invoice Review Route",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit ERP Submission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit ERP Submission": {
+      "main": [
+        [
+          {
+            "node": "Return ERP-Submitted Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Invoice Review Route": {
+      "main": [
+        [
+          {
+            "node": "Return Review Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Failed Invoice Execution": {
+      "main": [
+        [
+          {
+            "node": "Return Failed Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Exhausted API Retries": {
+      "main": [
+        [
+          {
+            "node": "Return Bounded Retry Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Invalid Invoice Payload": {
+      "main": [
+        [
+          {
+            "node": "Return Invalid Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 120,
+    "errorWorkflow": "ErrHandler202609"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3214f076-c074-4454-babe-ad03646d98aa",
+  "triggerCount": 1,
+  "tags": []
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "workflow": "invoice",
+  "cases": [
+    {
+      "id": "invoice-valid",
+      "title": "Valid invoice reaches ERP exactly once",
+      "source_file": "invoices/valid-invoice.txt",
+      "input": {
+        "document_name": "INV-2026-1001.txt",
+        "document_content": "INVOICE\nInvoice Number: INV-2026-1001\nVendor: Nordlicht Office GmbH\nInvoice Date: 2026-08-20\nSubtotal: 1000.00\nTax: 190.00\nTotal: 1190.00\nCurrency: EUR"
+      },
+      "expected": {
+        "status": "completed",
+        "validation_passes": true,
+        "erp_insertions": 1
+      }
+    },
+    {
+      "id": "invoice-arithmetic-error",
+      "title": "Exact arithmetic mismatch routes to review",
+      "source_file": "invoices/arithmetic-mismatch.txt",
+      "input": {
+        "document_name": "INV-2026-1002.txt",
+        "document_content": "INVOICE\nInvoice Number: INV-2026-1002\nVendor: Elbe Systems AG\nInvoice Date: 2026-08-21\nSubtotal: 1000.00\nTax: 190.00\nTotal: 1210.00\nCurrency: EUR"
+      },
+      "expected": {
+        "status": "waiting_for_review",
+        "validation_passes": false,
+        "review_reason_contains": [
+          "1,210.00",
+          "1,000.00",
+          "190.00"
+        ],
+        "erp_insertions": 0
+      }
+    },
+    {
+      "id": "invoice-duplicate",
+      "title": "Second identical vendor-number pair is blocked",
+      "source_file": "invoices/duplicate-invoice.txt",
+      "repeat": 2,
+      "input": {
+        "document_name": "INV-2026-DUP-01.txt",
+        "document_content": "INVOICE\nInvoice Number: INV-2026-DUP-01\nVendor: Rhein Consulting GmbH\nInvoice Date: 2026-08-22\nSubtotal: 500.00\nTax: 95.00\nTotal: 595.00\nCurrency: EUR"
+      },
+      "expected": {
+        "first_status": "completed",
+        "second_status": "waiting_for_review",
+        "second_decision_contains": "duplicate",
+        "total_erp_insertions": 1
+      }
+    },
+    {
+      "id": "invoice-missing-tax",
+      "title": "Missing required tax field",
+      "source_file": "invoices/missing-tax.txt",
+      "input": {
+        "document_name": "INV-2026-1004.txt",
+        "document_content": "INVOICE\nInvoice Number: INV-2026-1004\nVendor: Spree Logistics GmbH\nInvoice Date: 2026-08-23\nSubtotal: 800.00\nTotal: 952.00\nCurrency: EUR"
+      },
+      "expected": {
+        "status": "waiting_for_review",
+        "review_reason_contains": [
+          "tax"
+        ],
+        "erp_insertions": 0
+      }
+    },
+    {
+      "id": "invoice-malformed-scan",
+      "title": "Malformed extraction retries once then reviews",
+      "source_file": "invoices/malformed-scan.txt",
+      "input": {
+        "document_name": "scan-1005.txt",
+        "document_content": "1NV0!CE ?? VEND0R UNREADABLE ?? T0TAL 7?5",
+        "fault_profile": "provider_malformed_twice"
+      },
+      "expected": {
+        "status": "waiting_for_review",
+        "retry_count_min": 1,
+        "raw_malformed_output_hidden": true,
+        "erp_insertions": 0
+      }
+    },
+    {
+      "id": "invoice-erp-failure",
+      "title": "ERP outage produces an exact non-success state",
+      "source_file": "invoices/erp-failure.txt",
+      "input": {
+        "document_name": "INV-2026-1006.txt",
+        "document_content": "INVOICE\nInvoice Number: INV-2026-1006\nVendor: Isar Hosting GmbH\nInvoice Date: 2026-08-24\nSubtotal: 200.00\nTax: 38.00\nTotal: 238.00\nCurrency: EUR",
+        "fault_profile": "erp_failure"
+      },
+      "expected": {
+        "status_any": [
+          "failed",
+          "completed_with_warning"
+        ],
+        "exact_error_required": true,
+        "audit_required": true
+      }
+    }
+  ]
+}

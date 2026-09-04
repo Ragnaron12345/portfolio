@@ -1,0 +1,8 @@
+INVOICE
+Invoice Number: INV-2026-1004
+Vendor: Spree Logistics GmbH
+Invoice Date: 2026-08-23
+Subtotal: 800.00
+Total: 952.00
+Currency: EUR
+

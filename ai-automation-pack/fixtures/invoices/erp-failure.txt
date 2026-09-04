@@ -1,0 +1,8 @@
+INVOICE
+Invoice Number: INV-2026-1006
+Vendor: Isar Hosting GmbH
+Invoice Date: 2026-08-24
+Subtotal: 200.00
+Tax: 38.00
+Total: 238.00
+Currency: EUR

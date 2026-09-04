@@ -1,0 +1,190 @@
+name: ${COMPOSE_PROJECT_NAME:-ai-automation-pack}
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-security: &default-security
+  security_opt:
+    - no-new-privileges:true
+
+x-app-env: &app-env
+  - path: .env.example
+    required: true
+  - path: .env
+    required: false
+  - path: .env.local
+    required: false
+
+x-n8n-env: &n8n-env
+  DB_TYPE: postgresdb
+  DB_POSTGRESDB_HOST: postgres
+  DB_POSTGRESDB_PORT: 5432
+  DB_POSTGRESDB_DATABASE: ${POSTGRES_DB:-automation_pack}
+  DB_POSTGRESDB_USER: ${POSTGRES_USER:-automation_pack}
+  DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD:-replace-with-a-long-url-safe-local-password}
+  DB_POSTGRESDB_SCHEMA: n8n
+  N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-replace-with-at-least-32-random-characters}
+  N8N_PROTOCOL: http
+  N8N_HOST: localhost
+  N8N_PORT: 5678
+  N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL:-http://localhost:5678}
+  N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-http://localhost:5678/}
+  GENERIC_TIMEZONE: ${GENERIC_TIMEZONE:-Europe/Berlin}
+  TZ: ${TZ:-Europe/Berlin}
+  N8N_LOG_LEVEL: ${N8N_LOG_LEVEL:-info}
+  N8N_DIAGNOSTICS_ENABLED: "false"
+  N8N_PERSONALIZATION_ENABLED: "false"
+  N8N_VERSION_NOTIFICATIONS_ENABLED: "false"
+  N8N_TEMPLATES_ENABLED: "false"
+  N8N_PUBLIC_API_DISABLED: "true"
+  N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+  N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+  N8N_UNVERIFIED_PACKAGES_ENABLED: "false"
+  N8N_RUNNERS_TASK_TIMEOUT: 300
+  N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES: 268435456
+  N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES: 1000
+  EXECUTIONS_DATA_SAVE_ON_ERROR: all
+  EXECUTIONS_DATA_SAVE_ON_SUCCESS: all
+  EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "true"
+  EXECUTIONS_DATA_PRUNE: "true"
+  EXECUTIONS_DATA_MAX_AGE: 168
+  AUTOMATION_API_INTERNAL_URL: http://backend:8000
+  AUTOMATION_INTERNAL_TOKEN: ${AUTOMATION_INTERNAL_TOKEN:-replace-with-a-random-internal-token}
+
+services:
+  postgres:
+    image: postgres:16.14-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-automation_pack}
+      POSTGRES_USER: ${POSTGRES_USER:-automation_pack}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-replace-with-a-long-url-safe-local-password}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/00-create-n8n-schema.sh:/docker-entrypoint-initdb.d/00-create-n8n-schema.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  backend:
+    build:
+      context: ./automation-api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    init: true
+    env_file: *app-env
+    environment:
+      AUTOMATION_DATABASE_URL: "postgresql+psycopg://${POSTGRES_USER:-automation_pack}:${POSTGRES_PASSWORD:-replace-with-a-long-url-safe-local-password}@postgres:5432/${POSTGRES_DB:-automation_pack}"
+      AUTOMATION_INTERNAL_TOKEN: ${AUTOMATION_INTERNAL_TOKEN:-replace-with-a-random-internal-token}
+      AUTOMATION_USE_N8N: "true"
+      AUTOMATION_N8N_WEBHOOK_BASE_URL: http://n8n:5678/webhook
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8004}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 20s
+    networks:
+      - edge
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  n8n-import:
+    image: docker.n8n.io/n8nio/n8n:2.32.7
+    restart: "no"
+    environment: *n8n-env
+    entrypoint: ["/bin/sh", "/bootstrap/n8n-init.sh"]
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/workflows:ro
+      - ./scripts/n8n-init.sh:/bootstrap/n8n-init.sh:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.32.7
+    restart: unless-stopped
+    environment: *n8n-env
+    ports:
+      - "127.0.0.1:${N8N_PORT:-5678}:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/workflows:ro
+    depends_on:
+      n8n-import:
+        condition: service_completed_successfully
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5678/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 25s
+    networks:
+      - edge
+      - data
+    <<: *default-security
+    logging: *default-logging
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3004}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+      n8n:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 15s
+    networks:
+      - edge
+    <<: *default-security
+    logging: *default-logging
+
+volumes:
+  postgres_data:
+  n8n_data:
+
+networks:
+  edge:
+  data:
+    internal: true

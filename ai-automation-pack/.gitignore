@@ -1,0 +1,37 @@
+# Runtime configuration and credentials
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Frontend
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Local runtime state
+*.db
+*.sqlite*
+data/
+n8n-data/
+postgres-data/
+coverage/
+test-results/
+playwright-report/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

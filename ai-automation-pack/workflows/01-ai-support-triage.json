@@ -1,0 +1,719 @@
+{
+  "id": "SupportFlow2609",
+  "name": "AI Support Triage",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "support-triage",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2f9c503e-3e38-4604-b25f-dfb0335675f0",
+      "name": "Receive Support Request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        160
+      ],
+      "webhookId": "31599ec4-b312-4850-b9e5-f1d9acf3c9c0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5e63c931-2ea5-4687-a809-456d42777231",
+              "leftValue": "={{ String($json.body?.execution_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fd7b6117-08a7-437a-a24d-d33b805126c5",
+              "leftValue": "={{ String($json.body?.correlation_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "cf06449f-c268-4fbd-bca6-d1a66c4a0353",
+              "leftValue": "={{ String($json.body?.payload?.ticket_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "210a44e5-f7fa-4dd5-874e-462158b4da1b",
+              "leftValue": "={{ String($json.body?.payload?.customer_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c757b94f-71ca-4169-a0b4-d330ff581617",
+              "leftValue": "={{ String($json.body?.payload?.message || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f0d0e324-334d-4be9-b44c-da66ea23b286",
+      "name": "Validate Orchestration Envelope",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -800,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/internal/runs/support' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 45000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "16db069f-25db-41d8-9ba8-62ea7aad4f29",
+      "name": "Run Classification Retrieval and Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        40
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1500,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1b6f3d08-9856-4934-bbb2-3607cb4e4cfa",
+              "leftValue": "={{ String($json.execution_id || $json.id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eb86e6b7-b101-442e-8adf-78a210ec57c2",
+      "name": "Execution Response Available",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -260,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e0bb4999-d479-4c26-94e3-8d04c3849f48",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7429f26e-8ea3-467e-9100-bf33950b8ba8",
+      "name": "Execution Failed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1acb4e3b-a105-459a-b197-8448d6caaf92",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "waiting_for_review",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "723fcda5-55c4-4614-9a8d-243d00b34f75",
+      "name": "Risk Policy Requires Review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Support Request').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Support Request').item.json.body.execution_id, event_type: 'n8n.support.completed', actor: 'n8n', outcome: 'completed', summary: $('Run Classification Retrieval and Draft').item.json.decision_summary?.reason || $('Run Classification Retrieval and Draft').item.json.decision_summary?.outcome || 'Support request completed automatically', details: { n8n_execution_id: $execution.id, workflow: 'support' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "f2d48073-c21e-4179-ab51-fc9472340378",
+      "name": "Audit Completed Support Decision",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        200
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Support Request').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Support Request').item.json.body.execution_id, event_type: 'n8n.support.waiting_for_review', actor: 'n8n', outcome: 'review', summary: $('Run Classification Retrieval and Draft').item.json.decision_summary?.reason || 'Risk policy requires human review', details: { n8n_execution_id: $execution.id, workflow: 'support' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "c5ed367c-9f20-4c4b-a188-1c5c9fc8c4dd",
+      "name": "Audit Mandatory Human Review",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Support Request').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Support Request').item.json.body.execution_id, event_type: 'n8n.support.failed', actor: 'n8n', outcome: 'failed', summary: $('Run Classification Retrieval and Draft').item.json.error?.message || 'Support execution failed', details: { n8n_execution_id: $execution.id, workflow: 'support' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "01a5f0b9-6c9f-4fca-987f-afeb49b917cd",
+      "name": "Audit Failed Support Execution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        -80
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Support Request').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Support Request').item.json.body.execution_id, event_type: 'n8n.support.transport_failed', actor: 'n8n', outcome: 'failed', summary: $('Run Classification Retrieval and Draft').item.json.error?.message || $('Run Classification Retrieval and Draft').item.json.message || 'Internal API call failed after three attempts', details: { n8n_execution_id: $execution.id, workflow: 'support' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "1c7bb2af-3108-453a-85ce-2585535302ae",
+      "name": "Audit Exhausted API Retries",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        -260
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Support Request').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Support Request').item.json.body.execution_id, event_type: 'n8n.support.invalid_payload', actor: 'n8n', outcome: 'failed', summary: 'Rejected support envelope: execution_id, correlation_id, ticket_id, customer_id and message are required', details: { n8n_execution_id: $execution.id, workflow: 'support' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "032ef252-31a8-41d8-a07b-a47504835024",
+      "name": "Audit Invalid Support Payload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -520,
+        360
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Run Classification Retrieval and Draft').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "ea4686d8-f8f4-427c-97a8-4294e58a3adf",
+      "name": "Return Completed Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Run Classification Retrieval and Draft').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "978e35da-4e32-477e-92c3-2436beff76b3",
+      "name": "Return Review Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Run Classification Retrieval and Draft').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "60a7bdad-a081-4dc6-8c23-6004b20b3ccb",
+      "name": "Return Failed Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        580,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Support Request').item.json.body?.execution_id || null, correlation_id: $('Receive Support Request').item.json.body?.correlation_id || null, workflow: 'support', current_stage: 'ORCHESTRATION_FAILED', status: 'failed', decision_summary: 'Internal API call failed after bounded retries', error: String($('Run Classification Retrieval and Draft').item.json.error?.message || $('Run Classification Retrieval and Draft').item.json.message || 'Internal API call failed after three attempts') }) }}",
+        "options": {
+          "responseCode": 502
+        }
+      },
+      "id": "65d4e3be-e746-4da2-96b2-1820541dd5ae",
+      "name": "Return Bounded Retry Failure",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        300,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Support Request').item.json.body?.execution_id || null, correlation_id: $('Receive Support Request').item.json.body?.correlation_id || null, workflow: 'support', current_stage: 'RECEIVED', status: 'failed', decision_summary: 'Payload rejected before side effects', error: 'execution_id, correlation_id, ticket_id, customer_id and message are required' }) }}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "9d22042a-0fb6-4bd9-a6ee-6936aaf2b9ed",
+      "name": "Return Invalid Payload",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -260,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Support orchestration boundary\n\nFastAPI owns schema validation, classification, prompt-injection defense, KB retrieval, grounded drafting, risk policy, approvals, CRM side effects and database audit. n8n validates the transport envelope, applies a bounded transport retry, makes review/failure routing visible and records the orchestration outcome.",
+        "height": 300,
+        "width": 700,
+        "color": 4
+      },
+      "id": "059161c9-0d98-4402-b00f-c557dc638bed",
+      "name": "Support Boundary Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        -220
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Support Request": {
+      "main": [
+        [
+          {
+            "node": "Validate Orchestration Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Orchestration Envelope": {
+      "main": [
+        [
+          {
+            "node": "Run Classification Retrieval and Draft",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Invalid Support Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Classification Retrieval and Draft": {
+      "main": [
+        [
+          {
+            "node": "Execution Response Available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Response Available": {
+      "main": [
+        [
+          {
+            "node": "Execution Failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Exhausted API Retries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Failed": {
+      "main": [
+        [
+          {
+            "node": "Audit Failed Support Execution",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Risk Policy Requires Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Risk Policy Requires Review": {
+      "main": [
+        [
+          {
+            "node": "Audit Mandatory Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Completed Support Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Completed Support Decision": {
+      "main": [
+        [
+          {
+            "node": "Return Completed Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Mandatory Human Review": {
+      "main": [
+        [
+          {
+            "node": "Return Review Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Failed Support Execution": {
+      "main": [
+        [
+          {
+            "node": "Return Failed Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Exhausted API Retries": {
+      "main": [
+        [
+          {
+            "node": "Return Bounded Retry Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Invalid Support Payload": {
+      "main": [
+        [
+          {
+            "node": "Return Invalid Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 120,
+    "errorWorkflow": "ErrHandler202609"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a2ce13a2-ff11-4c24-9d49-dca925b2aacb",
+  "triggerCount": 1,
+  "tags": []
+}

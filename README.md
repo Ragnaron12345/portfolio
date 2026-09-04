@@ -34,16 +34,28 @@ A reproducible evaluation platform for comparing LLMs, prompt versions, and RAG 
 
 **Highlights:** exact model × prompt × retrieval × case matrices, bounded asynchronous execution with retries and partial persistence, immutable run snapshots, deterministic and judge metrics, a 56-case seven-category benchmark, failure evidence, RAG chunk inspection, and persisted Markdown/JSON reports.
 
+### [Flowline — AI Automation Pack](ai-automation-pack)
+
+An auditable automation operations console with n8n orchestration for support triage, invoice processing, and incident intelligence.
+
+[![Flowline workflow operations](ai-automation-pack/docs/images/overview-runtime.png)](ai-automation-pack)
+
+**Stack:** n8n, FastAPI, React, TypeScript, PostgreSQL, SQLAlchemy, Docker Compose
+
+**Highlights:** schema-validated AI decisions, confidence and risk routing, human approval queues, idempotent mock CRM/ERP/Jira/Slack integrations, bounded retries, deduplication, trace timelines, audit logs, failure injection, and reproducible end-to-end scenarios.
+
 ## Repository structure
 
 ```text
 portfolio/
 ├── nexora-ai-operations-platform/
 ├── document-intelligence-pipeline/
-└── llm-evaluation-lab/
-    ├── backend/
+├── llm-evaluation-lab/
+└── ai-automation-pack/
+    ├── automation-api/
     ├── frontend/
-    ├── data/
+    ├── workflows/
+    ├── fixtures/
     ├── docs/
     ├── docker-compose.yml
     └── README.md

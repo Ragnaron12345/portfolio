@@ -1,0 +1,849 @@
+{
+  "id": "IncidentFlow260",
+  "name": "Incident Intelligence and Escalation",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "incident-intelligence",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0f6e209e-d5d9-4674-b766-c400930034a8",
+      "name": "Receive Monitoring Event",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1100,
+        160
+      ],
+      "webhookId": "77113585-7c07-417f-bfc3-60784c5603a5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e22a670c-baea-4b10-966b-ac3316c9c3d7",
+              "leftValue": "={{ String($json.body?.execution_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "bcd65431-7021-4db5-a5f6-77aa36f4a2a3",
+              "leftValue": "={{ String($json.body?.correlation_id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "87f1a574-ced0-4945-a1ef-93e17e1d4eaa",
+              "leftValue": "={{ String($json.body?.payload?.source || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "25f3c1fa-a9b3-47fd-b593-5491e853805d",
+              "leftValue": "={{ String($json.body?.payload?.service || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "78c626d4-3b68-4bb7-94dd-66aa45b56e55",
+              "leftValue": "={{ String($json.body?.payload?.severity || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "70ac7db4-5f00-43ab-a681-8d4904297ba0",
+              "leftValue": "={{ JSON.stringify($json.body?.payload?.events || []) }}",
+              "rightValue": "[]",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "cb575ca4-8fcd-4431-91d6-32084aa5640b",
+      "name": "Validate Incident Envelope",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -860,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/internal/runs/incident' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 45000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "5ce45e31-1378-48d1-88f1-2447cbe51ed7",
+      "name": "Deduplicate Enrich and Summarize via API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -580,
+        40
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1500,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4b25e980-080b-4d86-82cd-f606bb463f52",
+              "leftValue": "={{ String($json.execution_id || $json.id || '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a406bed6-ce48-469c-a09f-d8bd698623f3",
+      "name": "Execution Response Available",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3a12351d-3910-4aa8-81d9-d269a193dd94",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c424b6b4-d4ec-40dd-ad21-689be19b540f",
+      "name": "Execution Failed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1e96f0bf-6315-4f3c-872f-604edcc29ca0",
+              "leftValue": "={{ String($json.status || '') }}",
+              "rightValue": "waiting_for_review",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f0b287f5-0593-4253-b922-d6d803735b4b",
+      "name": "Incomplete Event Requires Review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "17910241-f17a-421d-9a40-76d25b42185c",
+              "leftValue": "={{ JSON.stringify($json.decision_summary || {}).toLowerCase() }}",
+              "rightValue": "deduplicat",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d2ae0d27-e97c-4755-9070-a5e5aaf1bc10",
+      "name": "Was Incident Deduplicated",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        200,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.created', actor: 'n8n', outcome: 'completed', summary: $('Deduplicate Enrich and Summarize via API').item.json.decision_summary?.reason || $('Deduplicate Enrich and Summarize via API').item.json.decision_summary?.outcome || 'New incident created and stakeholders notified', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "e795e989-b8d5-475a-a98c-2b2a50940a69",
+      "name": "Audit New Jira and Slack Actions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        260
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.deduplicated', actor: 'n8n', outcome: 'deduplicated', summary: $('Deduplicate Enrich and Summarize via API').item.json.decision_summary?.reason || 'Duplicate event merged without creating a second Jira incident', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "d170a438-bc04-482b-8f73-4e4052498b6c",
+      "name": "Audit Deduplicated Incident",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        140
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.waiting_for_review', actor: 'n8n', outcome: 'review', summary: $('Deduplicate Enrich and Summarize via API').item.json.decision_summary?.reason || 'Incomplete incident event requires human review', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "55c366ae-08ee-4645-b145-4fe02e16382a",
+      "name": "Audit Incident Review Route",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        20
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.failed', actor: 'n8n', outcome: 'failed', summary: $('Deduplicate Enrich and Summarize via API').item.json.error?.message || 'Incident execution failed', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "81102284-69a4-45e3-b47c-828752826521",
+      "name": "Audit Failed Incident Execution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        -100
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.transport_failed', actor: 'n8n', outcome: 'failed', summary: $('Deduplicate Enrich and Summarize via API').item.json.error?.message || $('Deduplicate Enrich and Summarize via API').item.json.message || 'Internal API call failed after three attempts', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "a7f109ec-584e-42a2-9960-171a97af79a9",
+      "name": "Audit Exhausted API Retries",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -60,
+        -280
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $('Receive Monitoring Event').item.json.body.correlation_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ execution_id: $('Receive Monitoring Event').item.json.body.execution_id, event_type: 'n8n.incident.invalid_payload', actor: 'n8n', outcome: 'failed', summary: 'Rejected incident envelope: execution_id, correlation_id, source, service, severity and at least one event are required', details: { n8n_execution_id: $execution.id, workflow: 'incident' } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "70235aa5-4a7a-46dd-8258-6e7a0af0e98e",
+      "name": "Audit Invalid Incident Payload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -580,
+        380
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Deduplicate Enrich and Summarize via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "a984721e-160b-4740-b7dc-1ee10a871468",
+      "name": "Return New Incident Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        760,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Deduplicate Enrich and Summarize via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "7c4a281f-8ddf-4b60-b793-e8ac64d35543",
+      "name": "Return Deduplicated Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        760,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Deduplicate Enrich and Summarize via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "b34858e9-a477-4bb6-a9a3-9cdd39178a83",
+      "name": "Return Review Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Deduplicate Enrich and Summarize via API').item.json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "82b055d2-8521-4314-b888-a09c5f463e8e",
+      "name": "Return Failed Execution",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Monitoring Event').item.json.body?.execution_id || null, correlation_id: $('Receive Monitoring Event').item.json.body?.correlation_id || null, workflow: 'incident', current_stage: 'ORCHESTRATION_FAILED', status: 'failed', decision_summary: 'Internal API call failed after bounded retries', error: String($('Deduplicate Enrich and Summarize via API').item.json.error?.message || $('Deduplicate Enrich and Summarize via API').item.json.message || 'Internal API call failed after three attempts') }) }}",
+        "options": {
+          "responseCode": 502
+        }
+      },
+      "id": "14016e83-8021-4bc5-98a0-cf6306e0c1d5",
+      "name": "Return Bounded Retry Failure",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        200,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ ({ execution_id: $('Receive Monitoring Event').item.json.body?.execution_id || null, correlation_id: $('Receive Monitoring Event').item.json.body?.correlation_id || null, workflow: 'incident', current_stage: 'RECEIVED', status: 'failed', decision_summary: 'Payload rejected before side effects', error: 'execution_id, correlation_id, source, service, severity and at least one event are required' }) }}",
+        "options": {
+          "responseCode": 422
+        }
+      },
+      "id": "3d711ee8-903b-44d8-90cb-643092345090",
+      "name": "Return Invalid Payload",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -320,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Incident orchestration boundary\n\nFastAPI owns fingerprint normalization, time-window deduplication, safe structured summarization, confidence validation, Jira/Slack idempotency and audit records. n8n shows whether the event failed, needs review, was deduplicated or created a new incident. Possible causes remain hypotheses unless evidence confirms them.",
+        "height": 310,
+        "width": 760,
+        "color": 6
+      },
+      "id": "54385151-e7c4-4cca-8317-47b33776ed37",
+      "name": "Incident Boundary Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1140,
+        -230
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Monitoring Event": {
+      "main": [
+        [
+          {
+            "node": "Validate Incident Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Incident Envelope": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Enrich and Summarize via API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Invalid Incident Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Enrich and Summarize via API": {
+      "main": [
+        [
+          {
+            "node": "Execution Response Available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Response Available": {
+      "main": [
+        [
+          {
+            "node": "Execution Failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit Exhausted API Retries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execution Failed": {
+      "main": [
+        [
+          {
+            "node": "Audit Failed Incident Execution",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Incomplete Event Requires Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incomplete Event Requires Review": {
+      "main": [
+        [
+          {
+            "node": "Audit Incident Review Route",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Was Incident Deduplicated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Was Incident Deduplicated": {
+      "main": [
+        [
+          {
+            "node": "Audit Deduplicated Incident",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit New Jira and Slack Actions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit New Jira and Slack Actions": {
+      "main": [
+        [
+          {
+            "node": "Return New Incident Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Deduplicated Incident": {
+      "main": [
+        [
+          {
+            "node": "Return Deduplicated Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Incident Review Route": {
+      "main": [
+        [
+          {
+            "node": "Return Review Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Failed Incident Execution": {
+      "main": [
+        [
+          {
+            "node": "Return Failed Execution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Exhausted API Retries": {
+      "main": [
+        [
+          {
+            "node": "Return Bounded Retry Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audit Invalid Incident Payload": {
+      "main": [
+        [
+          {
+            "node": "Return Invalid Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 120,
+    "errorWorkflow": "ErrHandler202609"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "23507028-5747-4e8e-b36f-7fa41c06f5de",
+  "triggerCount": 1,
+  "tags": []
+}

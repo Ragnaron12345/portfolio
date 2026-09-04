@@ -1,0 +1,9 @@
+INVOICE
+Invoice Number: INV-2026-1001
+Vendor: Nordlicht Office GmbH
+Invoice Date: 2026-08-20
+Subtotal: 1000.00
+Tax: 190.00
+Total: 1190.00
+Currency: EUR
+

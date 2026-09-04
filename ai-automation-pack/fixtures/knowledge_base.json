@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "articles": [
+    {
+      "id": "KB-CARD-REPLACEMENT",
+      "title": "Card replacement service levels",
+      "tags": [
+        "card",
+        "replacement",
+        "delivery"
+      ],
+      "body": "Standard card replacement takes 5-7 business days. Expedited replacement, where available, takes 2-3 business days. Identity verification is required before an order is placed."
+    },
+    {
+      "id": "KB-STOLEN-CARD",
+      "title": "Lost or stolen card response",
+      "tags": [
+        "stolen",
+        "lost",
+        "fraud",
+        "security"
+      ],
+      "body": "Treat a reported stolen card as a high-risk security event. Prioritize freezing or blocking the card, preserve the customer report, and escalate to the fraud queue for human review. Do not close the case or send a final customer response automatically."
+    },
+    {
+      "id": "KB-PAYMENT-DECLINE",
+      "title": "Card payment troubleshooting",
+      "tags": [
+        "payment",
+        "decline",
+        "merchant"
+      ],
+      "body": "Confirm the card is active, check balance and merchant restrictions, and ask whether other transactions work. Never ask for a PIN, full card number, password, or one-time code."
+    },
+    {
+      "id": "KB-ACCOUNT-TAKEOVER",
+      "title": "Suspected account takeover",
+      "tags": [
+        "login",
+        "email change",
+        "takeover",
+        "security"
+      ],
+      "body": "Unexpected credential or profile changes require a security hold and mandatory human escalation. Do not reverse changes or disclose account details until identity checks are complete."
+    },
+    {
+      "id": "KB-COMPLAINT",
+      "title": "Complaint handling",
+      "tags": [
+        "complaint",
+        "service",
+        "escalation"
+      ],
+      "body": "Acknowledge the issue in plain language, avoid assigning blame, preserve the complaint record, and route repeat service failures to an operator when policy requires."
+    }
+  ]
+}

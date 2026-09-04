@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "workflow": "incident",
+  "cases": [
+    {
+      "id": "incident-payment-outage",
+      "title": "Critical payments outage",
+      "input": {
+        "source": "monitoring",
+        "service": "payments-api",
+        "severity": "critical",
+        "events": [
+          "latency > 3s",
+          "HTTP 5xx spike",
+          "database connection failures"
+        ]
+      },
+      "expected": {
+        "status_any": [
+          "completed",
+          "completed_with_warning"
+        ],
+        "jira_insertions": 1,
+        "slack_messages": 1,
+        "possible_causes_are_hypotheses": true
+      }
+    },
+    {
+      "id": "incident-database-latency",
+      "title": "Database latency",
+      "input": {
+        "source": "apm",
+        "service": "ledger-api",
+        "severity": "high",
+        "events": [
+          "database query p95 > 2s",
+          "connection pool utilization 96%",
+          "request queue depth rising"
+        ]
+      },
+      "expected": {
+        "status_any": [
+          "completed",
+          "completed_with_warning"
+        ],
+        "jira_insertions": 1,
+        "slack_messages": 1,
+        "possible_causes_are_hypotheses": true
+      }
+    },
+    {
+      "id": "incident-duplicate-burst",
+      "title": "Repeated burst deduplicates",
+      "repeat": 2,
+      "input": {
+        "source": "monitoring",
+        "service": "checkout-api",
+        "severity": "critical",
+        "events": [
+          "HTTP 5xx spike",
+          "latency > 3s",
+          "health check failures"
+        ]
+      },
+      "expected": {
+        "first_status_any": [
+          "completed",
+          "completed_with_warning"
+        ],
+        "second_status_any": [
+          "completed",
+          "completed_with_warning"
+        ],
+        "second_decision_contains": "deduplicat",
+        "total_jira_insertions": 1,
+        "occurrences_min": 2
+      }
+    },
+    {
+      "id": "incident-incomplete",
+      "title": "Incomplete low-information event",
+      "input": {
+        "source": "monitoring",
+        "service": "unknown-edge-service",
+        "severity": "medium",
+        "events": [
+          "alarm triggered"
+        ]
+      },
+      "expected": {
+        "status_any": [
+          "waiting_for_review",
+          "completed_with_warning"
+        ],
+        "no_confirmed_root_cause": true
+      }
+    },
+    {
+      "id": "incident-slack-retry",
+      "title": "Slack transient failure retries once",
+      "input": {
+        "source": "monitoring",
+        "service": "auth-api",
+        "severity": "high",
+        "events": [
+          "HTTP 5xx spike",
+          "login failures increasing"
+        ],
+        "fault_profile": "slack_failure_once"
+      },
+      "expected": {
+        "status_any": [
+          "completed",
+          "completed_with_warning"
+        ],
+        "external_retry_visible": true,
+        "audit_required": true
+      }
+    },
+    {
+      "id": "incident-jira-failure",
+      "title": "Jira outage is not marked completed",
+      "input": {
+        "source": "monitoring",
+        "service": "settlement-api",
+        "severity": "critical",
+        "events": [
+          "HTTP 5xx spike",
+          "settlement queue stalled"
+        ],
+        "fault_profile": "jira_failure"
+      },
+      "expected": {
+        "status": "failed",
+        "exact_error_required": true,
+        "audit_required": true
+      }
+    }
+  ]
+}

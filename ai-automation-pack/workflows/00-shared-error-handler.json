@@ -1,0 +1,164 @@
+{
+  "id": "ErrHandler202609",
+  "name": "AI Automation Pack - Shared Error Handler",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "0a230da7-f438-49cb-aa40-81715973a311",
+      "name": "Catch Workflow Failure",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b498bb46-aeef-48ae-ae9a-9a57c6392380",
+              "name": "workflow_name",
+              "value": "={{ $json.workflow?.name || 'unknown-workflow' }}",
+              "type": "string"
+            },
+            {
+              "id": "c4167541-54a3-48fe-8f3c-2db42a9db669",
+              "name": "n8n_execution_id",
+              "value": "={{ $json.execution?.id || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "6fc691cd-1acc-4e36-94c9-ec1115976420",
+              "name": "failed_node",
+              "value": "={{ $json.execution?.lastNodeExecuted || 'trigger' }}",
+              "type": "string"
+            },
+            {
+              "id": "8aebd331-31b3-4e92-a3b9-f3ff3c6ad9fa",
+              "name": "error_message",
+              "value": "={{ $json.execution?.error?.message || $json.trigger?.error?.message || 'Unknown n8n workflow failure' }}",
+              "type": "string"
+            },
+            {
+              "id": "f256501a-cb9a-4ba8-aa25-4a3925669b70",
+              "name": "execution_url",
+              "value": "={{ $json.execution?.url || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "keepOnlySet": true
+        }
+      },
+      "id": "6af85519-3a88-45e7-ab4b-98575dca160f",
+      "name": "Shape Safe Failure Event",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.AUTOMATION_API_INTERNAL_URL + '/api/v1/audit/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Internal-Token",
+              "value": "={{ $env.AUTOMATION_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "X-Correlation-ID",
+              "value": "={{ $json.n8n_execution_id || $execution.id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ event_type: 'n8n.workflow.failed', actor: 'n8n-error-handler', outcome: 'failed', summary: $json.error_message, details: { workflow_name: $json.workflow_name, n8n_execution_id: $json.n8n_execution_id, failed_node: $json.failed_node, execution_url: $json.execution_url } }) }}",
+        "options": {
+          "timeout": 10000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "6303d90e-8e65-47df-89d1-c3fbf46c30dd",
+      "name": "Persist Exact Failure Audit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -20,
+        80
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "content": "## Shared failure policy\n\nCalled by all three workflows after an unhandled node failure. The handler keeps the operator-safe message, failed node and n8n execution URL, then retries the backend audit write at most three times. It never copies raw model output or secrets.",
+        "height": 260,
+        "width": 720,
+        "color": 5
+      },
+      "id": "e313d191-0816-4094-b039-6dd7c56b8dd9",
+      "name": "Failure Handling Contract",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -160
+      ]
+    }
+  ],
+  "connections": {
+    "Catch Workflow Failure": {
+      "main": [
+        [
+          {
+            "node": "Shape Safe Failure Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Safe Failure Event": {
+      "main": [
+        [
+          {
+            "node": "Persist Exact Failure Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 60
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c02c7016-bef4-435d-8406-09c046cde975",
+  "triggerCount": 1,
+  "tags": []
+}
